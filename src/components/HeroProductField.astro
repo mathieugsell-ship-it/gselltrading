@@ -1,0 +1,370 @@
+---
+import { PRODUCTS } from '../data/products';
+import ProductArt from './ProductArt.astro';
+
+// Scatter positions (desktop). Top-left anchored %, three depth layers.
+// Kept clear of the left-hand text zone; some deliberately overflow edges.
+const POS: Record<
+  string,
+  { x: string; y: string; size: number; layer: 1 | 2 | 3; dur: string; delay: string; rot: string; halo: string }
+> = {
+  riz:     { x: '58%', y: '30%', size: 176, layer: 3, dur: '4.6s', delay: '-1.2s', rot: '1.6deg',  halo: '#E5A24B' },
+  thon:    { x: '80%', y: '9%',  size: 122, layer: 2, dur: '5.2s', delay: '-0.4s', rot: '-1.5deg', halo: '#7fd9a8' },
+  coco:    { x: '69%', y: '60%', size: 158, layer: 3, dur: '4.2s', delay: '-2.1s', rot: '1.2deg',  halo: '#7fd9a8' },
+  fruits:  { x: '90%', y: '44%', size: 104, layer: 1, dur: '5.6s', delay: '-1.6s', rot: '-1.3deg', halo: '#E5A24B' },
+  poulet:  { x: '48%', y: '74%', size: 116, layer: 2, dur: '4.8s', delay: '-0.8s', rot: '1.4deg',  halo: '#E5A24B' },
+  petfood: { x: '88%', y: '76%', size: 96,  layer: 1, dur: '5.0s', delay: '-2.5s', rot: '-1.4deg', halo: '#7fd9a8' },
+};
+
+// Auto-demo order (2-3 products showcased once on load)
+const DEMO = ['riz', 'coco', 'thon'];
+---
+
+<div class="hpf" data-hpf data-demo={DEMO.join(',')}>
+  <ul class="pf-field">
+    {
+      PRODUCTS.map((p, i) => {
+        const pos = POS[p.key];
+        return (
+          <li class="pf-cell">
+            <a
+              class:list={['pf-item', `pf-l${pos.layer}`]}
+              data-key={p.key}
+              href={p.reportUrl}
+              aria-label={`${p.nom} — consulter le rapport de marché`}
+              style={`--i:${i}; --x:${pos.x}; --y:${pos.y}; --size:${pos.size}px; --dur:${pos.dur}; --delay:${pos.delay}; --rot:${pos.rot}; --halo:${pos.halo}`}
+            >
+              <span class="pf-parallax">
+                <span class="pf-floaty">
+                  <span class="pf-pastille">
+                    <span class="pf-art"><ProductArt productKey={p.icon} /></span>
+                    <span class="pf-ping" aria-hidden="true"></span>
+                  </span>
+                  <span class="pf-chip">
+                    <span class="pf-chip__name">{p.labelTuile}</span>
+                    <span class="pf-chip__go">voir le rapport <span aria-hidden="true">→</span></span>
+                  </span>
+                </span>
+              </span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-hpf]');
+  if (root) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.pf-item'));
+
+    // --- Entrance (staggered) once the hero is on screen ---
+    const enter = () => {
+      root.classList.add('is-in');
+      const total = items.length * 85 + 650;
+      // Snap off entrance delays afterwards so hover/dim stay responsive
+      window.setTimeout(() => root.classList.add('entered'), total);
+      if (!reduce) window.setTimeout(runDemo, total + 500);
+    };
+
+    // --- One-time auto-demo of the hover state ---
+    const runDemo = () => {
+      const keys = (root.dataset.demo || '').split(',').filter(Boolean);
+      let d = 0;
+      keys.forEach((key, idx) => {
+        const el = root.querySelector<HTMLElement>(`.pf-item[data-key="${key}"]`);
+        if (!el) return;
+        window.setTimeout(() => {
+          root.classList.add('demoing');
+          el.classList.add('is-demo');
+          window.setTimeout(() => {
+            el.classList.remove('is-demo');
+            if (idx === keys.length - 1) root.classList.remove('demoing');
+          }, 720);
+        }, d);
+        d += 900;
+      });
+    };
+
+    if (reduce) {
+      root.classList.add('is-in', 'entered');
+    } else if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            enter();
+            io.disconnect();
+          }
+        },
+        { threshold: 0.2 }
+      );
+      io.observe(root);
+    } else {
+      enter();
+    }
+
+    // --- Cursor parallax (desktop, fine pointer only) ---
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!reduce && finePointer) {
+      let raf = 0;
+      let tx = 0;
+      let ty = 0;
+      const onMove = (e: PointerEvent) => {
+        const r = root.getBoundingClientRect();
+        tx = (e.clientX - r.left) / r.width - 0.5;
+        ty = (e.clientY - r.top) / r.height - 0.5;
+        if (!raf) raf = requestAnimationFrame(apply);
+      };
+      const apply = () => {
+        raf = 0;
+        items.forEach((el) => {
+          const layer = Number(el.classList.contains('pf-l3') ? 3 : el.classList.contains('pf-l2') ? 2 : 1);
+          const mag = layer * 7;
+          el.style.setProperty('--px', `${(-tx * mag).toFixed(2)}px`);
+          el.style.setProperty('--py', `${(-ty * mag).toFixed(2)}px`);
+        });
+      };
+      root.addEventListener('pointermove', onMove);
+      root.addEventListener('pointerleave', () => {
+        items.forEach((el) => {
+          el.style.setProperty('--px', '0px');
+          el.style.setProperty('--py', '0px');
+        });
+      });
+    }
+  }
+</script>
+
+<style is:global>
+  .hpf {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .pf-field {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pf-cell {
+    display: contents;
+  }
+
+  .pf-item {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    pointer-events: auto;
+    text-decoration: none;
+    /* entrance state */
+    opacity: 0;
+    transform: translateY(26px) scale(0.9);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    transition-delay: calc(var(--i) * 85ms);
+  }
+  .hpf.is-in .pf-item {
+    opacity: 1;
+    transform: none;
+  }
+  .hpf.entered .pf-item {
+    transition-delay: 0s;
+    transition-duration: 0.3s;
+  }
+  .pf-l1 { z-index: 1; }
+  .pf-l2 { z-index: 2; }
+  .pf-l3 { z-index: 3; }
+
+  .pf-parallax {
+    display: block;
+    transform: translate3d(var(--px, 0), var(--py, 0), 0);
+    transition: transform 0.4s ease-out;
+  }
+  .pf-floaty {
+    display: block;
+    animation: pfFloat var(--dur, 4.5s) ease-in-out var(--delay, 0s) infinite;
+  }
+  @keyframes pfFloat {
+    0%,
+    100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(var(--rot, 1deg)); }
+  }
+
+  .pf-pastille {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 26px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 61, 46, 0.06);
+    box-shadow: 0 18px 34px rgba(72, 52, 20, 0.14), 0 4px 10px rgba(72, 52, 20, 0.08);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+  .pf-l1 .pf-pastille {
+    filter: saturate(0.92);
+    opacity: 0.9;
+  }
+  .pf-art {
+    display: block;
+    width: 62%;
+  }
+  .prod-art {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Pulsing affordance dot */
+  .pf-ping {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--halo, #e5a24b);
+    box-shadow: 0 0 0 0 var(--halo, #e5a24b);
+    animation: pfPing 2.6s ease-out infinite;
+  }
+  @keyframes pfPing {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--halo) 60%, transparent); }
+    70%,
+    100% { box-shadow: 0 0 0 9px transparent; }
+  }
+
+  /* Chip label */
+  .pf-chip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translate(-50%, 6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    white-space: nowrap;
+    background: #0f3d2e;
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.4rem 0.7rem;
+    box-shadow: 0 10px 24px rgba(15, 61, 46, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+    z-index: 5;
+  }
+  .pf-chip__name {
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+  .pf-chip__go {
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--mint);
+  }
+  .pf-chip__go span {
+    color: #e5a24b;
+  }
+
+  /* ---- Relief state: hover / focus / auto-demo ---- */
+  .pf-item:hover,
+  .pf-item:focus-visible,
+  .pf-item.is-demo {
+    z-index: 6;
+    outline: none;
+  }
+  .pf-item:hover .pf-pastille,
+  .pf-item:focus-visible .pf-pastille,
+  .pf-item.is-demo .pf-pastille {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px var(--halo), 0 26px 46px rgba(72, 52, 20, 0.22);
+  }
+  .pf-l1 .pf-pastille { filter: none; }
+  .pf-item:hover .pf-pastille { filter: none; opacity: 1; }
+  .pf-item:hover .pf-chip,
+  .pf-item:focus-visible .pf-chip,
+  .pf-item.is-demo .pf-chip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  .pf-item:focus-visible .pf-pastille {
+    box-shadow: 0 0 0 3px var(--halo), 0 0 0 6px rgba(15, 61, 46, 0.4),
+      0 26px 46px rgba(72, 52, 20, 0.22);
+  }
+
+  /* Dim + slow the others while one is engaged */
+  .hpf.entered:hover .pf-item:not(:hover),
+  .hpf.entered:focus-within .pf-item:not(:focus-within):not(:hover),
+  .hpf.demoing .pf-item:not(.is-demo) {
+    opacity: 0.5;
+  }
+  .hpf.entered:hover .pf-item:not(:hover) .pf-floaty,
+  .hpf.demoing .pf-item:not(.is-demo) .pf-floaty {
+    animation-duration: 9s;
+  }
+
+  /* ============ Mobile / touch: lively grid, permanent labels ============ */
+  @media (max-width: 900px) {
+    .hpf {
+      position: relative;
+      pointer-events: auto;
+    }
+    .pf-field {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      padding: 0.5rem 0 0.25rem;
+    }
+    .pf-cell { display: block; }
+    .pf-item {
+      position: static;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .pf-parallax { transform: none; }
+    .pf-chip {
+      position: static;
+      transform: none;
+      opacity: 1;
+      background: transparent;
+      box-shadow: none;
+      color: var(--green-900);
+      padding: 0;
+      white-space: normal;
+      text-align: center;
+    }
+    .pf-chip__name { font-size: 0.72rem; }
+    .pf-chip__go { display: none; }
+    .pf-ping { top: 6px; right: 22%; }
+    .hpf.demoing .pf-item:not(.is-demo) { opacity: 1; }
+  }
+  @media (max-width: 400px) {
+    .pf-field { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ============ Reduced motion ============ */
+  @media (prefers-reduced-motion: reduce) {
+    .pf-item {
+      transition: opacity 0.4s ease;
+      transform: none;
+    }
+    .pf-floaty { animation: none; }
+    .pf-ping { animation: none; }
+    .pf-parallax { transform: none; }
+    .pf-item:hover .pf-pastille,
+    .pf-item:focus-visible .pf-pastille,
+    .pf-item.is-demo .pf-pastille { transition: none; }
+  }
+</style>

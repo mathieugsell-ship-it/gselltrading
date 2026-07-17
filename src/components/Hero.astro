@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import HeroProductShowcase from './HeroProductShowcase.astro';
+import HeroProductField from './HeroProductField.astro';
 
 const bullets = [
   'Spécialistes agro-alimentaire',
@@ -9,8 +9,9 @@ const bullets = [
 ];
 ---
 
-<section class="hero">
-  <div class="hero__bg" aria-hidden="true"></div>
+<section class="hero" data-hero>
+  <div class="hero__field"><HeroProductField /></div>
+
   <div class="container hero__inner">
     <div class="hero__content">
       <span class="hero__kicker">Sourcing agro-alimentaire · Thaïlande</span>
@@ -20,16 +21,16 @@ const bullets = [
       </h1>
       <p class="hero__subtitle">
         Basés en Thaïlande, nous accompagnons les sociétés étrangères qui
-        souhaitent sourcer du riz, du thon en conserve et des produits
-        agro-alimentaires thaïs — de la sélection du fournisseur au conteneur
-        expédié. Sans stock, à commission transparente.
+        sourcent du riz, du thon en conserve et des produits agro-alimentaires
+        thaïs — du fournisseur au conteneur expédié. Sans stock, à commission
+        transparente.
       </p>
       <div class="hero__cta">
         <a class="btn btn--primary" href="/contact">
           Discuter de votre projet
           <Icon name="arrow-right" size={18} />
         </a>
-        <a class="btn btn--ghost" href="/rapports">Consulter nos rapports</a>
+        <a class="btn btn--outline" href="/rapports">Consulter nos rapports</a>
       </div>
       <ul class="hero__bullets">
         {
@@ -42,69 +43,87 @@ const bullets = [
         }
       </ul>
     </div>
-
-    <div class="hero__showcase">
-      <HeroProductShowcase />
-    </div>
   </div>
 </section>
 
 <style>
   .hero {
     position: relative;
-    color: #fff;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
     overflow: hidden;
     isolation: isolate;
+    background: radial-gradient(120% 120% at 15% 12%, #fbf9f4 0%, #f6f1e7 58%, #f1ead9 100%);
   }
-  .hero__bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(135deg, #0b2e22 0%, var(--green-900) 38%, var(--green-700) 78%, var(--green-600) 100%);
-  }
-  .hero__bg::after {
+  /* subtle warm + faint mint corner veils */
+  .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle at 88% 10%, rgba(127, 217, 168, 0.2), transparent 40%),
-      radial-gradient(circle at 6% 92%, rgba(127, 217, 168, 0.12), transparent 42%);
+    z-index: 0;
+    background-image: radial-gradient(38% 44% at 92% 8%, rgba(229, 162, 75, 0.16), transparent 70%),
+      radial-gradient(36% 42% at 6% 96%, rgba(127, 217, 168, 0.14), transparent 70%);
+    pointer-events: none;
   }
+
+  .hero__field {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
   .hero__inner {
-    display: grid;
-    grid-template-columns: 58fr 42fr;
-    align-items: center;
-    gap: clamp(1.5rem, 3.5vw, 2.75rem);
-    padding-block: clamp(2.75rem, 5.5vw, 4.5rem);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-block: clamp(3rem, 7vw, 5rem);
+    pointer-events: none;
+  }
+  .hero__content {
+    max-width: 620px;
+  }
+  .hero__content :where(a, .btn) {
+    pointer-events: auto;
   }
 
   .hero__kicker {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
     font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 800;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
-    color: var(--mint);
-    margin-bottom: 1rem;
+    color: #1a5c42;
+    margin-bottom: 1.1rem;
+  }
+  .hero__kicker::after {
+    content: '';
+    width: 46px;
+    height: 3px;
+    border-radius: 2px;
+    background: #e5a24b;
+    margin-top: 0.55rem;
   }
   .hero__title {
-    color: #fff;
-    font-size: clamp(1.65rem, 2.4vw, 2.3rem);
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    color: #0f3d2e;
+    font-size: clamp(1.9rem, 3.2vw, 2.95rem);
+    line-height: 1.12;
+    font-weight: 800;
+    letter-spacing: -0.022em;
     max-width: 640px;
     text-wrap: balance;
-    margin: 0 0 1.1rem;
+    margin: 0 0 1.15rem;
   }
   .hero__accent {
-    color: var(--mint);
+    color: #237a53;
   }
   .hero__subtitle {
     font-size: clamp(1rem, 1.2vw, 1.125rem);
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 540px;
-    margin: 0 0 1.6rem;
+    color: #46574c;
+    max-width: 500px;
+    margin: 0 0 1.7rem;
   }
   .hero__cta {
     display: flex;
@@ -112,7 +131,7 @@ const bullets = [
     flex-wrap: wrap;
   }
   .hero__cta .btn {
-    padding-block: 0.7rem;
+    padding-block: 0.72rem;
   }
   .hero__bullets {
     list-style: none;
@@ -128,24 +147,32 @@ const bullets = [
     gap: 0.45rem;
     font-weight: 600;
     font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: #23402f;
   }
   .hero__bullets svg {
-    color: var(--mint);
+    color: #237a53;
     flex-shrink: 0;
   }
 
-  .hero__showcase {
-    min-width: 0;
-  }
-
   @media (max-width: 900px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .hero {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: clamp(1.5rem, 5vw, 2.5rem);
     }
-    .hero__title,
-    .hero__subtitle {
+    .hero__field {
+      position: static;
+      order: 2;
+      z-index: 2;
+      padding-inline: var(--gutter);
+    }
+    .hero__inner {
+      order: 1;
+      pointer-events: auto;
+      padding-bottom: 0.5rem;
+    }
+    .hero__content {
       max-width: 640px;
     }
   }

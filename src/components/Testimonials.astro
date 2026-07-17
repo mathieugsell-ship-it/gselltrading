@@ -1,0 +1,227 @@
+---
+// Carousel is fully functional but rendered empty of fake reviews.
+// Pass real items once available; until then it shows a neutral state.
+interface Testimonial {
+  quote: string;
+  name: string;
+  role?: string;
+  rating?: number;
+}
+interface Props {
+  items?: Testimonial[];
+}
+const { items = [] }: Props = Astro.props;
+const hasItems = items.length > 0;
+---
+
+<div class="tst" data-carousel>
+  {
+    hasItems ? (
+      <>
+        <div class="tst__viewport">
+          <ul class="tst__track" data-track>
+            {items.map((t) => (
+              <li class="tst__slide">
+                <blockquote class="tst__card">
+                  {t.rating && (
+                    <div class="tst__stars" aria-label={`Note : ${t.rating} sur 5`}>
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill={i < t.rating! ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11.5 2.5 14 8l6 .5-4.5 4 1.5 6-5.5-3.3L6.5 18.5 8 12.5 3.5 8.5 9.5 8z"/></svg>
+                      ))}
+                    </div>
+                  )}
+                  <p class="tst__quote">“{t.quote}”</p>
+                  <footer class="tst__author">
+                    <span class="tst__name">{t.name}</span>
+                    {t.role && <span class="tst__role">{t.role}</span>}
+                  </footer>
+                </blockquote>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="tst__controls">
+          <button class="tst__arrow" data-prev aria-label="Témoignage précédent">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="tst__dots" data-dots></div>
+          <button class="tst__arrow" data-next aria-label="Témoignage suivant">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </>
+    ) : (
+      <div class="tst__empty">
+        <p>Références clients en cours de constitution.</p>
+        <span>Nous accompagnons nos premiers importateurs — les retours seront publiés ici.</span>
+      </div>
+    )
+  }
+</div>
+
+{
+  hasItems && (
+    <script>
+      const root = document.querySelector<HTMLElement>('[data-carousel]');
+      if (root) {
+        const track = root.querySelector<HTMLElement>('[data-track]');
+        const slides = Array.from(root.querySelectorAll<HTMLElement>('.tst__slide'));
+        const dotsWrap = root.querySelector<HTMLElement>('[data-dots]');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let index = 0;
+        let timer: number | undefined;
+
+        const dots = slides.map((_, i) => {
+          const b = document.createElement('button');
+          b.className = 'tst__dot';
+          b.setAttribute('aria-label', `Aller au témoignage ${i + 1}`);
+          b.addEventListener('click', () => go(i, true));
+          dotsWrap?.appendChild(b);
+          return b;
+        });
+
+        const go = (i: number, user = false) => {
+          index = (i + slides.length) % slides.length;
+          if (track) track.style.transform = `translateX(-${index * 100}%)`;
+          dots.forEach((d, di) => d.classList.toggle('is-active', di === index));
+          if (user) restart();
+        };
+        const next = () => go(index + 1);
+        const prev = () => go(index - 1);
+        root.querySelector('[data-next]')?.addEventListener('click', () => go(index + 1, true));
+        root.querySelector('[data-prev]')?.addEventListener('click', () => go(index - 1, true));
+
+        const start = () => {
+          if (reduce || slides.length < 2) return;
+          timer = window.setInterval(next, 6000);
+        };
+        const stop = () => timer && window.clearInterval(timer);
+        const restart = () => { stop(); start(); };
+        root.addEventListener('mouseenter', stop);
+        root.addEventListener('mouseleave', start);
+        root.addEventListener('focusin', stop);
+        root.addEventListener('focusout', start);
+
+        // Basic touch swipe
+        let x0: number | null = null;
+        root.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+        root.addEventListener('touchend', (e) => {
+          if (x0 === null) return;
+          const dx = e.changedTouches[0].clientX - x0;
+          if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+          x0 = null;
+        });
+
+        go(0);
+        start();
+      }
+    </script>
+  )
+}
+
+<style>
+  .tst {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .tst__viewport {
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .tst__track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.5s var(--ease);
+  }
+  .tst__slide {
+    flex: 0 0 100%;
+    padding: 0.25rem;
+  }
+  .tst__card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin: 0;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .tst__stars {
+    display: inline-flex;
+    gap: 0.15rem;
+    color: #f2a71b;
+    margin-bottom: 1rem;
+  }
+  .tst__quote {
+    font-size: 1.15rem;
+    color: var(--text);
+    margin: 0 0 1.25rem;
+  }
+  .tst__name {
+    display: block;
+    font-weight: 700;
+    color: var(--green-900);
+  }
+  .tst__role {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+  .tst__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .tst__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--green-900);
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .tst__arrow:hover {
+    border-color: var(--green-600);
+    background: var(--bg-pale);
+  }
+  .tst__dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+  :global(.tst__dot) {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: none;
+    background: var(--border);
+    cursor: pointer;
+    padding: 0;
+  }
+  :global(.tst__dot.is-active) {
+    background: var(--green-600);
+  }
+  .tst__empty {
+    text-align: center;
+    background: var(--bg-pale-2);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem 1.5rem;
+  }
+  .tst__empty p {
+    font-weight: 700;
+    color: var(--green-900);
+    margin: 0 0 0.4rem;
+  }
+  .tst__empty span {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+</style>

@@ -1,7 +1,8 @@
 ---
+import TopBar from '../components/TopBar.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import MobileCTA from '../components/MobileCTA.astro';
+import FloatingContact from '../components/FloatingContact.astro';
 import {
   SITE,
   SITE_INDEXABLE,
@@ -97,19 +98,24 @@ const structuredData = [organizationJsonLd(), webSiteJsonLd(), ...jsonLd];
   </head>
   <body>
     <a class="skip-link" href="#main">Aller au contenu</a>
+    <TopBar />
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
-    <MobileCTA />
+    <FloatingContact />
 
     <script>
-      // --- Header densify on scroll ---
+      // --- Header densify + floating CTA reveal on scroll ---
       const header = document.querySelector('[data-header]');
+      const floating = document.querySelector('[data-floating]');
       const onScroll = () => {
-        if (window.scrollY > 24) header?.classList.add('is-scrolled');
+        const y = window.scrollY;
+        if (y > 40) header?.classList.add('is-scrolled');
         else header?.classList.remove('is-scrolled');
+        if (y > 320) floating?.classList.add('is-visible');
+        else floating?.classList.remove('is-visible');
       };
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });

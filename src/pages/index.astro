@@ -5,108 +5,62 @@ import Stat from '../components/Stat.astro';
 import Faq from '../components/Faq.astro';
 import ReportCard from '../components/ReportCard.astro';
 import CtaSection from '../components/CtaSection.astro';
-import { REPORTS, SITE } from '../data/site';
+import HeroArt from '../components/HeroArt.astro';
+import WithWithout from '../components/WithWithout.astro';
+import InteractiveMap from '../components/InteractiveMap.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { REPORTS, SHOW_TESTIMONIALS } from '../data/site';
+
+const heroBullets = [
+  'Spécialistes agro-alimentaire',
+  'Sur le terrain à Phuket',
+  'Commission transparente',
+];
+
+const valueBadges = [
+  { icon: 'scale', label: 'Sans stock' },
+  { icon: 'wallet', label: 'Commission transparente' },
+  { icon: 'languages', label: 'Bilingue FR / EN' },
+  { icon: 'map-pin', label: 'Présence terrain à Phuket' },
+];
 
 const services = [
-  {
-    icon: 'search',
-    title: 'Sourcing & sélection',
-    text: 'Identifier des fournisseurs fiables, adaptés à votre cahier des charges.',
-  },
-  {
-    icon: 'shield-check',
-    title: 'Vérification & anti-fraude',
-    text: 'Contrôler l’existence, la fiabilité et la conformité avant tout engagement.',
-  },
-  {
-    icon: 'handshake',
-    title: 'Négociation',
-    text: 'Défendre vos intérêts sur le prix, les volumes et les conditions de paiement.',
-  },
-  {
-    icon: 'badge-check',
-    title: 'Qualité & conformité',
-    text: 'Coordonner inspections, certifications et documents d’export.',
-  },
-  {
-    icon: 'truck',
-    title: 'Logistique & suivi',
-    text: 'Accompagner l’expédition, de l’empotage au conteneur livré.',
-  },
+  { icon: 'search', title: 'Sourcing & sélection', text: 'Identifier des fournisseurs fiables, adaptés à votre cahier des charges.' },
+  { icon: 'shield-check', title: 'Vérification & anti-fraude', text: 'Contrôler l’existence, la fiabilité et la conformité avant tout engagement.' },
+  { icon: 'handshake', title: 'Négociation', text: 'Défendre vos intérêts sur le prix, les volumes et les conditions de paiement.' },
+  { icon: 'badge-check', title: 'Qualité & conformité', text: 'Coordonner inspections, certifications et documents d’export.' },
+  { icon: 'truck', title: 'Logistique & suivi', text: 'Accompagner l’expédition, de l’empotage au conteneur livré.' },
 ];
 
 const process = [
-  {
-    title: 'Cadrage',
-    text: 'On clarifie votre besoin, vos volumes et vos contraintes.',
-  },
-  {
-    title: 'Sourcing',
-    text: 'On identifie et présélectionne des fournisseurs pertinents.',
-  },
-  {
-    title: 'Vérification',
-    text: 'On sécurise : existence, fiabilité, conformité, échantillons.',
-  },
-  {
-    title: 'Négociation & contrat',
-    text: 'On obtient les meilleures conditions et on cadre l’accord.',
-  },
-  {
-    title: 'Exécution & suivi',
-    text: 'On accompagne qualité, documents et expédition jusqu’au bout.',
-  },
+  { title: 'Cadrage', text: 'On clarifie votre besoin, vos volumes et vos contraintes.' },
+  { title: 'Sourcing', text: 'On identifie et présélectionne des fournisseurs pertinents.' },
+  { title: 'Vérification', text: 'On sécurise : existence, fiabilité, conformité, échantillons.' },
+  { title: 'Négociation & contrat', text: 'On obtient les meilleures conditions et on cadre l’accord.' },
+  { title: 'Exécution & suivi', text: 'On accompagne qualité, documents et expédition jusqu’au bout.' },
 ];
 
 const differentiators = [
-  {
-    icon: 'sprout',
-    title: 'Spécialistes de l’agro-alimentaire',
-    text: 'Pas des généralistes : nous connaissons le riz, le thon et les filières agro thaïes.',
-  },
-  {
-    icon: 'map-pin',
-    title: 'Sur le terrain, à Phuket',
-    text: 'Une présence locale réelle, pas un intermédiaire à distance.',
-  },
-  {
-    icon: 'wallet',
-    title: 'Commission transparente',
-    text: 'Nous sommes payés par vous, pour défendre vos intérêts — jamais de marge cachée côté fournisseur.',
-  },
-  {
-    icon: 'scale',
-    title: 'Sans stock, sans conflit d’intérêt',
-    text: 'Nous ne vous vendons pas notre marchandise : nous trouvons la vôtre.',
-  },
-  {
-    icon: 'languages',
-    title: 'Bilingues FR / EN',
-    text: 'Un interlocuteur unique, dans votre langue, entre vous et le marché thaï.',
-  },
+  { icon: 'sprout', title: 'Spécialistes de l’agro-alimentaire', text: 'Pas des généralistes : nous connaissons le riz, le thon et les filières agro thaïes.' },
+  { icon: 'map-pin', title: 'Sur le terrain, à Phuket', text: 'Une présence locale réelle, pas un intermédiaire à distance.' },
+  { icon: 'wallet', title: 'Commission transparente', text: 'Nous sommes payés par vous, pour défendre vos intérêts — jamais de marge cachée côté fournisseur.' },
+  { icon: 'scale', title: 'Sans stock, sans conflit d’intérêt', text: 'Nous ne vous vendons pas notre marchandise : nous trouvons la vôtre.' },
+  { icon: 'languages', title: 'Bilingues FR / EN', text: 'Un interlocuteur unique, dans votre langue, entre vous et le marché thaï.' },
+];
+
+const risks = [
+  { icon: 'circle-alert', label: 'Sociétés fictives' },
+  { icon: 'file-text', label: 'Faux documents d’expédition' },
+  { icon: 'wallet', label: 'Virements détournés' },
+  { icon: 'badge-check', label: 'Qualité qui se dégrade' },
 ];
 
 const faq = [
-  {
-    q: 'Faut-il une société en Thaïlande pour importer ?',
-    a: 'Non : vous achetez depuis votre pays. C’est l’exportateur thaï qui doit être agréé — nous nous assurons que c’est bien le cas et que la chaîne documentaire est en règle.',
-  },
-  {
-    q: 'Comment êtes-vous rémunérés ?',
-    a: 'À la commission, transparente et convenue à l’avance. Nous ne prenons pas de marge cachée côté fournisseur.',
-  },
-  {
-    q: 'Travaillez-vous avec de petits volumes ?',
-    a: 'Oui, y compris pour un premier conteneur d’essai. Nous accompagnons aussi les primo-importateurs.',
-  },
-  {
-    q: 'Quels produits couvrez-vous ?',
-    a: 'L’agro-alimentaire thaï : riz, thon en conserve, produits halal et agro-transformés.',
-  },
-  {
-    q: 'Où êtes-vous basés ?',
-    a: 'En Thaïlande, à Phuket, avec un accès direct au terrain.',
-  },
+  { q: 'Faut-il une société en Thaïlande pour importer ?', a: 'Non : vous achetez depuis votre pays. C’est l’exportateur thaï qui doit être agréé — nous nous assurons que c’est bien le cas et que la chaîne documentaire est en règle.' },
+  { q: 'Comment êtes-vous rémunérés ?', a: 'À la commission, transparente et convenue à l’avance. Nous ne prenons pas de marge cachée côté fournisseur.' },
+  { q: 'Travaillez-vous avec de petits volumes ?', a: 'Oui, y compris pour un premier conteneur d’essai. Nous accompagnons aussi les primo-importateurs.' },
+  { q: 'Quels produits couvrez-vous ?', a: 'L’agro-alimentaire thaï : riz, thon en conserve, produits halal et agro-transformés.' },
+  { q: 'Où êtes-vous basés ?', a: 'En Thaïlande, à Phuket, avec un accès direct au terrain.' },
 ];
 
 const faqJsonLd = {
@@ -124,13 +78,8 @@ const description =
   'Courtier agro-alimentaire sur le terrain en Thaïlande. Nous accompagnons les importateurs étrangers : sourcing, vérification, négociation et suivi, sans stock et à commission transparente.';
 ---
 
-<BaseLayout
-  title={title}
-  description={description}
-  path="/"
-  jsonLd={[faqJsonLd]}
->
-  <!-- HERO -->
+<BaseLayout title={title} description={description} path="/" jsonLd={[faqJsonLd]}>
+  <!-- ============ 3.3 HERO ============ -->
   <section class="hero">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="container hero__inner">
@@ -147,13 +96,24 @@ const description =
             Discuter de votre projet
             <Icon name="arrow-right" size={18} />
           </a>
-          <a class="btn btn--ghost btn--lg" href="/rapports">
-            Consulter nos rapports
-          </a>
+          <a class="btn btn--ghost btn--lg" href="/rapports">Consulter nos rapports</a>
         </div>
+        <ul class="hero__bullets">
+          {heroBullets.map((b) => (
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              {b}
+            </li>
+          ))}
+        </ul>
       </div>
+      <div class="hero__art">
+        <HeroArt />
+      </div>
+    </div>
 
-      <div class="hero__stats">
+    <div class="hero__statsband">
+      <div class="container hero__stats">
         <Stat value={339} suffix=" Md$" label="exportations thaïlandaises en 2025" light />
         <Stat display="1ᵉʳ" label="exportateur mondial de thon en conserve" light />
         <Stat value={7.9} decimals={1} suffix=" M t" label="de riz exporté par la Thaïlande en 2025" light />
@@ -162,7 +122,7 @@ const description =
     </div>
   </section>
 
-  <!-- PROBLÈME -->
+  <!-- ============ 3.4 PROBLÈME + BADGES VALEUR ============ -->
   <section class="section">
     <div class="container section__head reveal">
       <span class="eyebrow">Le constat</span>
@@ -174,25 +134,49 @@ const description =
         de sécuriser cette chaîne pour vous, sur le terrain.
       </p>
     </div>
+    <div class="container">
+      <ul class="value-badges reveal">
+        {valueBadges.map((v) => (
+          <li>
+            <span class="value-badges__icon"><Icon name={v.icon} size={20} /></span>
+            {v.label}
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
-  <!-- SERVICES -->
+  <!-- ============ 3.5 AVEC OU SANS ============ -->
   <section class="section section--pale">
+    <div class="container">
+      <div class="section__head center-head reveal">
+        <span class="eyebrow">La différence</span>
+        <h2>Avec ou sans nous ? Voyez la différence.</h2>
+        <p class="lead" style="margin-inline:auto">
+          Le même projet d’import, vécu de deux façons très différentes.
+        </p>
+      </div>
+      <div class="reveal">
+        <WithWithout />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3.6 SERVICES ============ -->
+  <section class="section">
     <div class="container">
       <div class="section__head reveal">
         <span class="eyebrow">Nos services</span>
         <h2>Un accompagnement de bout en bout</h2>
       </div>
       <div class="grid grid--3">
-        {
-          services.map((s) => (
-            <div class="card reveal">
-              <span class="card__icon"><Icon name={s.icon} /></span>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
-            </div>
-          ))
-        }
+        {services.map((s) => (
+          <a class="card card--hover reveal" href="/services">
+            <span class="card__icon"><Icon name={s.icon} /></span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </a>
+        ))}
       </div>
       <p class="reveal" style="margin-top:1.75rem">
         <a class="arrow-link" href="/services">
@@ -203,7 +187,25 @@ const description =
     </div>
   </section>
 
-  <!-- MÉTHODE / PROCESS -->
+  <!-- ============ 3.7 CARTE INTERACTIVE ★ ============ -->
+  <section class="section section--pale-2">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Sur le terrain</span>
+        <h2>Nous sommes là où ça se produit.</h2>
+        <p class="lead">
+          De la rizière du Nord-Est aux conserveries du Golfe, jusqu’aux marchés
+          d’import à l’autre bout du monde : explorez les filières agro thaïes et
+          les corridors d’export.
+        </p>
+      </div>
+      <div class="reveal">
+        <InteractiveMap />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3.8 MÉTHODE / TIMELINE ============ -->
   <section class="section">
     <div class="container">
       <div class="section__head reveal">
@@ -211,52 +213,66 @@ const description =
         <h2>Comment nous travaillons</h2>
       </div>
       <ol class="timeline">
-        {
-          process.map((step, i) => (
-            <li class="timeline__item reveal">
-              <span class="timeline__num">{i + 1}</span>
-              <div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-            </li>
-          ))
-        }
+        {process.map((step, i) => (
+          <li class="timeline__item reveal">
+            <span class="timeline__num">{i + 1}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
+          </li>
+        ))}
       </ol>
     </div>
   </section>
 
-  <!-- POURQUOI NOUS -->
-  <section class="section section--pale-2">
+  <!-- ============ 3.9 CHIFFRES MARCHÉ ============ -->
+  <section class="section market">
+    <div class="container">
+      <div class="section__head center-head reveal">
+        <span class="eyebrow eyebrow--light">Le marché en chiffres</span>
+        <h2>Une filière agro parmi les plus puissantes au monde</h2>
+      </div>
+      <div class="market__stats">
+        <Stat value={339} suffix=" Md$" label="d’exportations thaïlandaises en 2025" light />
+        <Stat value={7.9} decimals={1} suffix=" M t" label="de riz exporté en 2025" light />
+        <Stat display="1ᵉʳ" label="exportateur mondial de thon en conserve" light />
+        <Stat value={549} suffix=" k t" label="de thon en conserve exportées (2024)" light />
+      </div>
+      <p class="market__source reveal">
+        D’où viennent ces chiffres ?
+        <a href="/rapports">Nos rapports de marché →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 3.10 POURQUOI NOUS ============ -->
+  <section class="section section--pale">
     <div class="container">
       <div class="section__head reveal">
         <span class="eyebrow">Nos différences</span>
         <h2>Ce qui nous distingue</h2>
       </div>
       <div class="grid grid--3">
-        {
-          differentiators.map((d) => (
-            <div class="card reveal">
-              <span class="card__icon"><Icon name={d.icon} /></span>
-              <h3>{d.title}</h3>
-              <p>{d.text}</p>
-            </div>
-          ))
-        }
+        {differentiators.map((d) => (
+          <div class="card reveal">
+            <span class="card__icon"><Icon name={d.icon} /></span>
+            <h3>{d.title}</h3>
+            <p>{d.text}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- CONFIANCE / ANTI-FRAUDE -->
-  <section class="section trust">
+  <!-- ============ 3.11 CONFIANCE / ANTI-FRAUDE ============ -->
+  <section class="section">
     <div class="container trust__inner reveal">
-      <div class="trust__icon" aria-hidden="true">
-        <Icon name="shield-check" size={40} />
-      </div>
-      <div>
+      <div class="trust__lead">
+        <div class="trust__icon" aria-hidden="true"><Icon name="shield-check" size={40} /></div>
         <span class="eyebrow">Confiance & protection</span>
         <h2>Acheter à distance, sans les mauvaises surprises</h2>
-        <p class="lead">
+        <p>
           Les arnaques au sourcing existent : sociétés fictives, faux documents
           d’expédition, virements détournés, qualité qui se dégrade entre
           l’échantillon et le conteneur. Notre rôle est d’interposer une
@@ -265,28 +281,38 @@ const description =
           protectrices et un contrôle qualité avant expédition.
         </p>
       </div>
+      <ul class="risks">
+        {risks.map((r) => (
+          <li class="risks__item">
+            <span class="risks__icon"><Icon name={r.icon} size={20} /></span>
+            <span class="risks__label">{r.label}</span>
+            <span class="risks__tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              Neutralisé
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <!-- RAPPORTS TEASER -->
-  <section class="section section--pale">
+  <!-- ============ 3.12 RAPPORTS ============ -->
+  <section class="section section--pale-2">
     <div class="container">
       <div class="section__head reveal">
         <span class="eyebrow">Notre lecture du marché</span>
         <h2>Nos rapports</h2>
         <p class="lead">
-          Nous publions des analyses sectorielles pour partager notre lecture
-          des filières agro-alimentaires thaïes — chiffres à l’appui.
+          Nous publions des analyses sectorielles pour partager notre lecture des
+          filières agro-alimentaires thaïes — chiffres à l’appui.
         </p>
       </div>
       <div class="grid grid--3">
-        {
-          REPORTS.map((r) => (
-            <div class="reveal">
-              <ReportCard slug={r.slug} title={r.shortTitle} summary={r.summary} />
-            </div>
-          ))
-        }
+        {REPORTS.map((r) => (
+          <div class="reveal">
+            <ReportCard slug={r.slug} title={r.shortTitle} summary={r.summary} icon={r.icon} />
+          </div>
+        ))}
       </div>
       <p class="reveal" style="margin-top:1.75rem">
         <a class="arrow-link" href="/rapports">
@@ -297,7 +323,22 @@ const description =
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ============ 3.13 TÉMOIGNAGES (gated) ============ -->
+  {SHOW_TESTIMONIALS && (
+    <section class="section">
+      <div class="container">
+        <div class="section__head center-head reveal">
+          <span class="eyebrow">Références</span>
+          <h2>Ils nous font confiance</h2>
+        </div>
+        <div class="reveal">
+          <Testimonials />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============ 3.14 FAQ ============ -->
   <section class="section">
     <div class="container">
       <div class="section__head reveal">
@@ -310,6 +351,7 @@ const description =
     </div>
   </section>
 
+  <!-- ============ 3.15 CTA FINAL ============ -->
   <CtaSection
     title="Parlons de votre projet d’import."
     text="Décrivez-nous votre besoin — nous vous répondons rapidement."
@@ -318,6 +360,7 @@ const description =
 </BaseLayout>
 
 <style>
+  /* ---------- Hero ---------- */
   .hero {
     position: relative;
     color: #fff;
@@ -328,59 +371,111 @@ const description =
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(
-      135deg,
-      #0b2e22 0%,
-      var(--green-900) 38%,
-      var(--green-700) 78%,
-      var(--green-600) 100%
-    );
+    background: linear-gradient(135deg, #0b2e22 0%, var(--green-900) 38%, var(--green-700) 78%, var(--green-600) 100%);
   }
   .hero__bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(
-        circle at 82% 12%,
-        rgba(127, 217, 168, 0.28),
-        transparent 42%
-      ),
-      radial-gradient(circle at 12% 88%, rgba(127, 217, 168, 0.14), transparent 45%);
+    background-image: radial-gradient(circle at 82% 12%, rgba(127, 217, 168, 0.26), transparent 42%),
+      radial-gradient(circle at 12% 90%, rgba(127, 217, 168, 0.12), transparent 45%);
   }
   .hero__inner {
-    padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(2.5rem, 5vw, 3.5rem);
-  }
-  .hero__content {
-    max-width: 46rem;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(3rem, 6vw, 5rem) clamp(2.5rem, 4vw, 3.5rem);
   }
   .hero h1 {
     color: #fff;
-    font-size: clamp(2.1rem, 5.2vw, 3.5rem);
+    font-size: clamp(2.1rem, 4.6vw, 3.4rem);
   }
   .hero__subtitle {
-    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    font-size: clamp(1.02rem, 1.5vw, 1.2rem);
     color: rgba(255, 255, 255, 0.88);
-    max-width: 44rem;
-    margin-bottom: 2rem;
+    max-width: 42rem;
+    margin-bottom: 1.75rem;
   }
   .hero__cta {
     display: flex;
     gap: 0.9rem;
     flex-wrap: wrap;
   }
+  .hero__bullets {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+  }
+  .hero__bullets li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .hero__bullets svg {
+    color: var(--mint);
+  }
+  .hero__art {
+    display: flex;
+    justify-content: center;
+  }
+  .hero__statsband {
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(0, 0, 0, 0.12);
+  }
   .hero__stats {
-    margin-top: clamp(2.5rem, 6vw, 4rem);
-    padding-top: clamp(2rem, 4vw, 2.75rem);
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1.25rem 1rem;
+    padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  @media (max-width: 880px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .hero__art {
+      order: -1;
+      max-width: 380px;
+      margin-inline: auto;
+    }
   }
 
-  /* Timeline */
+  /* ---------- Value badges ---------- */
+  .value-badges {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .value-badges li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bg-pale);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.6rem 1.1rem;
+    font-weight: 700;
+    color: var(--green-900);
+    font-size: 0.95rem;
+  }
+  .value-badges__icon {
+    display: inline-flex;
+    color: var(--green-600);
+  }
+
+  /* ---------- Timeline ---------- */
   .timeline {
     list-style: none;
-    counter-reset: step;
     margin: 0;
     padding: 0;
     display: grid;
@@ -428,11 +523,7 @@ const description =
       left: 8%;
       right: 8%;
       height: 2px;
-      background: linear-gradient(
-        to right,
-        var(--mint),
-        var(--green-600)
-      );
+      background: linear-gradient(to right, var(--mint), var(--green-600));
       z-index: 0;
     }
     .timeline__num {
@@ -441,35 +532,109 @@ const description =
     }
   }
 
-  /* Trust */
+  /* ---------- Market ---------- */
+  .market {
+    background: linear-gradient(135deg, var(--green-900), var(--green-700));
+    color: #fff;
+  }
+  .market h2 {
+    color: #fff;
+  }
+  .eyebrow--light {
+    color: var(--mint);
+  }
+  .market__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem 1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .market__source {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+  .market__source a {
+    color: var(--mint);
+    font-weight: 700;
+  }
+
+  /* ---------- Trust / anti-fraude ---------- */
   .trust__inner {
-    display: flex;
-    gap: 1.75rem;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
     background: var(--bg-pale);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: clamp(1.75rem, 4vw, 2.75rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
   }
   .trust__icon {
-    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     border-radius: 18px;
     background: #fff;
     color: var(--green-600);
     box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
   }
-  .trust h2 {
+  .trust__lead h2 {
     margin-bottom: 0.75rem;
   }
-  @media (max-width: 560px) {
+  .trust__lead p {
+    color: var(--text);
+    margin: 0;
+  }
+  .risks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .risks__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+  }
+  .risks__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: #fdf5f3;
+    color: #c0553c;
+    flex-shrink: 0;
+  }
+  .risks__label {
+    font-weight: 600;
+    color: var(--green-900);
+    flex: 1;
+  }
+  .risks__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--green-600);
+    font-weight: 700;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+  @media (max-width: 760px) {
     .trust__inner {
-      flex-direction: column;
-      gap: 1.25rem;
+      grid-template-columns: 1fr;
     }
   }
 </style>

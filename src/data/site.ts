@@ -32,6 +32,11 @@ export const SITE = {
 export const SITE_INDEXABLE =
   import.meta.env.PUBLIC_SITE_INDEXABLE === 'true';
 
+// Testimonials: no real client references yet → keep the section hidden.
+// Flip to true (or set PUBLIC_SHOW_TESTIMONIALS=true) once we have real reviews.
+export const SHOW_TESTIMONIALS =
+  import.meta.env.PUBLIC_SHOW_TESTIMONIALS === 'true';
+
 // Main navigation (used by header & footer)
 export const NAV = [
   { label: 'Accueil', href: '/' },
@@ -49,6 +54,8 @@ export const REPORTS = [
     shortTitle: 'Panorama agro-alimentaire',
     summary:
       'Où en est le secteur, quels moteurs, quelles opportunités en 2025-2026.',
+    menuDesc: 'Vue d’ensemble du secteur agro thaï.',
+    icon: 'globe',
   },
   {
     slug: 'marche-riz-thailande',
@@ -56,6 +63,8 @@ export const REPORTS = [
     shortTitle: 'Marché du riz',
     summary:
       'Volumes, prix, variétés et débouchés d’un pilier de l’export thaï.',
+    menuDesc: 'Volumes, prix, variétés, débouchés.',
+    icon: 'sprout',
   },
   {
     slug: 'marche-thon-conserve-thailande',
@@ -63,6 +72,8 @@ export const REPORTS = [
     shortTitle: 'Marché du thon en conserve',
     summary:
       'Comment la Thaïlande domine ce marché mondial, et où se trouve la croissance.',
+    menuDesc: 'Le leader mondial et son potentiel.',
+    icon: 'fish',
   },
 ] as const;
 

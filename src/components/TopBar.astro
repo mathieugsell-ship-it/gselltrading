@@ -1,0 +1,109 @@
+---
+import Icon from './Icon.astro';
+import { SITE } from '../data/site';
+const waHref = `https://wa.me/${SITE.whatsapp.replace(/[^0-9]/g, '')}`;
+---
+
+<div class="topbar" data-topbar>
+  <div class="container topbar__inner">
+    <div class="topbar__left">
+      <a class="topbar__item" href={`mailto:${SITE.email}`}>
+        <Icon name="mail" size={15} />
+        <span>{SITE.email}</span>
+      </a>
+      <span class="topbar__item topbar__item--muted">
+        <Icon name="map-pin" size={15} />
+        <span>{SITE.address.display}</span>
+      </span>
+    </div>
+
+    <div class="topbar__right">
+      <a class="topbar__item" href={waHref} aria-label="Nous écrire sur WhatsApp">
+        <Icon name="phone" size={15} />
+        <span>WhatsApp</span>
+      </a>
+      <div class="lang-switch" role="group" aria-label="Choix de la langue">
+        <a href="/" aria-current="true" class="lang-switch__opt is-active">FR</a>
+        <span aria-hidden="true" class="lang-switch__sep">/</span>
+        <a href="#" class="lang-switch__opt" aria-disabled="true" title="Bientôt disponible">EN</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background: var(--green-900);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.82rem;
+  }
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 38px;
+    gap: 1rem;
+  }
+  .topbar__left,
+  .topbar__right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .topbar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+  }
+  .topbar__item :global(svg) {
+    color: var(--mint);
+  }
+  a.topbar__item:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+  .topbar__item--muted {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 700;
+  }
+  .lang-switch__opt {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    padding: 0.1rem 0.15rem;
+  }
+  .lang-switch__opt.is-active {
+    color: var(--mint);
+  }
+  .lang-switch__opt[aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+  .lang-switch__sep {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  @media (max-width: 720px) {
+    .topbar__item--muted {
+      display: none;
+    }
+    .topbar__left {
+      gap: 0.75rem;
+    }
+  }
+  @media (max-width: 460px) {
+    .topbar {
+      font-size: 0.76rem;
+    }
+    .topbar__left .topbar__item span {
+      max-width: 46vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+</style>

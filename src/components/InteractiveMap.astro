@@ -1,0 +1,492 @@
+---
+import Icon from './Icon.astro';
+
+// Zone data for tab A (Thailand). Generic figures only — no supplier names.
+const zones = [
+  {
+    id: 'isan',
+    name: 'Nord-Est (Isan)',
+    text: 'Le grenier à riz du pays : berceau du riz parfumé Hom Mali, cultivé sur le plateau du Nord-Est.',
+    stat: 'Riz Hom Mali · ~1 100 $/t FOB',
+  },
+  {
+    id: 'centre',
+    name: 'Plaine centrale',
+    text: 'Grande zone rizicole et agro-industrielle, proche de Bangkok et de ses infrastructures logistiques.',
+    stat: 'Cœur agro-industriel & logistique',
+  },
+  {
+    id: 'golfe',
+    name: 'Golfe & littoral',
+    text: 'Cœur de l’industrie du thon en conserve et des produits de la mer, autour de Samut Sakhon et Songkhla.',
+    stat: '1ᵉʳ exportateur mondial de thon',
+  },
+  {
+    id: 'sud',
+    name: 'Sud',
+    text: 'Filières halal et produits tropicaux transformés, tournées vers les marchés musulmans et l’export.',
+    stat: 'Halal · hub ASEAN visé pour 2028',
+  },
+];
+
+// Destination corridors for tab B (world).
+const corridors = [
+  { id: 'europe', name: 'Europe', tag: 'Thon thaï : 0,6 % de part → fort potentiel', x: 515, y: 115 },
+  { id: 'moyen-orient', name: 'Moyen-Orient', tag: 'Demande agro thaïe : +20 %', x: 620, y: 210 },
+  { id: 'afrique', name: 'Afrique', tag: 'Demande agro thaïe : +13 %', x: 545, y: 300 },
+  { id: 'amlat', name: 'Amérique latine', tag: 'Demande agro thaïe : +19 %', x: 320, y: 380 },
+  { id: 'asie', name: 'Asie', tag: 'Marchés historiques, volumes majeurs', x: 700, y: 150 },
+];
+---
+
+<div class="imap" data-imap>
+  <div class="imap__tabs" role="tablist" aria-label="Vues de la carte">
+    <button role="tab" id="imap-tab-a" aria-selected="true" aria-controls="imap-panel-a" data-imap-tab="a" class="imap__tab is-active">
+      <Icon name="map-pin" size={18} /> Les filières agro thaïes
+    </button>
+    <button role="tab" id="imap-tab-b" aria-selected="false" aria-controls="imap-panel-b" data-imap-tab="b" class="imap__tab">
+      <Icon name="globe" size={18} /> Nos corridors d’export
+    </button>
+  </div>
+
+  <!-- ============ TAB A — Thailand ============ -->
+  <div class="imap__panel" id="imap-panel-a" role="tabpanel" aria-labelledby="imap-tab-a" data-imap-view="a">
+    <div class="imap__stage">
+      <div class="imap__mapwrap">
+        <svg class="imap__svg th-map" viewBox="0 0 360 620" role="group" aria-label="Carte stylisée des filières agro-alimentaires de Thaïlande">
+          <g class="th-zones">
+            <path data-zone="centre" tabindex="0" role="button" aria-label="Plaine centrale"
+              d="M120,70 C95,80 85,120 92,160 C97,195 115,215 150,215 C175,215 185,185 182,150 C180,110 160,65 120,70 Z"><title>Plaine centrale</title></path>
+            <path data-zone="isan" tabindex="0" role="button" aria-label="Nord-Est (Isan)"
+              d="M185,95 C235,80 300,95 322,140 C340,180 325,225 280,235 C235,244 200,225 190,190 C182,160 180,120 185,95 Z"><title>Nord-Est (Isan)</title></path>
+            <path data-zone="golfe" tabindex="0" role="button" aria-label="Golfe et littoral"
+              d="M120,215 C100,235 95,275 110,310 C125,345 160,360 200,350 C238,340 250,300 240,265 C232,238 210,222 182,222 C160,222 138,225 120,215 Z"><title>Golfe et littoral</title></path>
+            <path data-zone="sud" tabindex="0" role="button" aria-label="Sud"
+              d="M175,350 C160,365 158,400 168,440 C176,475 190,520 200,560 C208,585 222,585 226,558 C232,515 224,470 215,430 C208,398 205,372 200,352 C192,348 183,348 175,350 Z"><title>Sud</title></path>
+          </g>
+          <g class="th-ports" aria-hidden="true">
+            <g class="th-port" transform="translate(168,250)">
+              <circle class="th-port__pulse" r="7"></circle>
+              <circle class="th-port__dot" r="4"></circle>
+              <text x="10" y="4">Bangkok</text>
+            </g>
+            <g class="th-port" transform="translate(205,288)">
+              <circle class="th-port__pulse" r="7"></circle>
+              <circle class="th-port__dot" r="4"></circle>
+              <text x="10" y="4">Laem Chabang</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="imap__info" id="zone-info" aria-live="polite">
+        <div class="imap__info-default" data-zone-default>
+          <span class="imap__kicker">Nous sommes sur le terrain, là où ça se produit.</span>
+          <p>Survolez ou sélectionnez une zone pour découvrir sa filière agro-alimentaire.</p>
+          <ul class="imap__legend">
+            <li><span class="dot dot--zone"></span> Zones de production</li>
+            <li><span class="dot dot--port"></span> Ports d’export (Laem Chabang, Bangkok)</li>
+          </ul>
+        </div>
+        <div class="imap__info-content" data-zone-content hidden>
+          <span class="imap__kicker" data-zone-name></span>
+          <p data-zone-text></p>
+          <div class="imap__stat"><span data-zone-stat></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB B — World ============ -->
+  <div class="imap__panel" id="imap-panel-b" role="tabpanel" aria-labelledby="imap-tab-b" data-imap-view="b" hidden>
+    <div class="imap__stage imap__stage--world">
+      <div class="imap__mapwrap">
+        <svg class="imap__svg world-map" viewBox="0 0 1000 520" role="group" aria-label="Carte du monde stylisée montrant les corridors d'export depuis la Thaïlande">
+          <g class="world-land" aria-hidden="true">
+            <path d="M150,70 C110,90 95,150 120,190 C140,220 200,235 250,225 C300,215 330,180 320,140 C310,100 260,70 210,66 C190,64 168,62 150,70 Z"/>
+            <path d="M300,270 C270,285 270,330 285,370 C298,405 315,450 335,455 C352,458 355,420 350,385 C345,345 340,300 330,282 C322,272 310,266 300,270 Z"/>
+            <path d="M490,80 C465,90 465,120 485,135 C510,150 545,145 555,125 C562,108 550,85 525,78 C512,75 500,76 490,80 Z"/>
+            <path d="M510,185 C475,195 470,240 485,285 C498,325 520,375 550,385 C580,393 600,355 600,310 C600,260 590,210 565,192 C548,181 528,180 510,185 Z"/>
+            <path d="M640,90 C600,110 605,160 640,185 C690,215 770,215 820,195 C865,177 875,135 850,105 C820,72 740,66 690,74 C670,77 655,82 640,90 Z"/>
+            <path d="M840,340 C810,350 808,385 828,405 C850,425 890,425 905,405 C918,388 912,358 888,345 C870,336 855,335 840,340 Z"/>
+          </g>
+
+          <g class="world-arcs" fill="none">
+            <path pathLength="1" d="M775,210 Q645,92 515,115"/>
+            <path pathLength="1" d="M775,210 Q737,130 700,150"/>
+            <path pathLength="1" d="M775,210 Q697,150 620,210"/>
+            <path pathLength="1" d="M775,210 Q660,175 545,300"/>
+            <path pathLength="1" d="M775,210 Q547,175 320,380"/>
+          </g>
+
+          <g class="world-origin" aria-hidden="true" transform="translate(775,210)">
+            <circle class="th-port__pulse" r="9"></circle>
+            <circle class="world-origin__dot" r="5"></circle>
+            <text x="12" y="5">Thaïlande</text>
+          </g>
+
+          {corridors.map((c) => (
+            <g class="world-node" data-node={c.id} tabindex="0" role="button" aria-label={`${c.name} — ${c.tag}`} transform={`translate(${c.x},${c.y})`}>
+              <circle class="world-node__hit" r="18"></circle>
+              <circle class="world-node__dot" r="6"></circle>
+              <text class="world-node__label" x="0" y="-14">{c.name}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      <div class="imap__info" id="corridor-info" aria-live="polite">
+        <span class="imap__kicker" data-corridor-name>Relier l’offre thaïe aux marchés d’import</span>
+        <p data-corridor-tag>
+          Au-delà de ses marchés historiques, la Thaïlande gagne du terrain sur de
+          nouveaux corridors. Survolez une destination pour voir le chiffre clé.
+        </p>
+        <ul class="imap__legend">
+          <li><span class="dot dot--port"></span> Thaïlande — origine</li>
+          <li><span class="dot dot--zone"></span> Zones de demande</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-imap]');
+  if (root) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---- Tabs ----
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-imap-tab]');
+    const views = root.querySelectorAll<HTMLElement>('[data-imap-view]');
+    let arcsPlayed = false;
+    const playArcs = () => {
+      if (arcsPlayed) return;
+      arcsPlayed = true;
+      root.querySelector('.world-arcs')?.classList.add('is-drawn');
+    };
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const key = tab.dataset.imapTab;
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        views.forEach((v) => {
+          v.hidden = v.dataset.imapView !== key;
+        });
+        if (key === 'b') playArcs();
+      });
+    });
+
+    // ---- Tab A: Thailand zones ----
+    const ZONES: Record<string, { name: string; text: string; stat: string }> = {
+      isan: { name: 'Nord-Est (Isan)', text: 'Le grenier à riz du pays : berceau du riz parfumé Hom Mali, cultivé sur le plateau du Nord-Est.', stat: 'Riz Hom Mali · ~1 100 $/t FOB' },
+      centre: { name: 'Plaine centrale', text: 'Grande zone rizicole et agro-industrielle, proche de Bangkok et de ses infrastructures logistiques.', stat: 'Cœur agro-industriel & logistique' },
+      golfe: { name: 'Golfe & littoral', text: 'Cœur de l’industrie du thon en conserve et des produits de la mer, autour de Samut Sakhon et Songkhla.', stat: '1ᵉʳ exportateur mondial de thon' },
+      sud: { name: 'Sud', text: 'Filières halal et produits tropicaux transformés, tournées vers les marchés musulmans et l’export.', stat: 'Halal · hub ASEAN visé pour 2028' },
+    };
+    const zonePaths = root.querySelectorAll<SVGPathElement>('.th-zones [data-zone]');
+    const zDefault = root.querySelector<HTMLElement>('[data-zone-default]');
+    const zContent = root.querySelector<HTMLElement>('[data-zone-content]');
+    const zName = root.querySelector<HTMLElement>('[data-zone-name]');
+    const zText = root.querySelector<HTMLElement>('[data-zone-text]');
+    const zStat = root.querySelector<HTMLElement>('[data-zone-stat]');
+
+    const showZone = (id: string) => {
+      const data = ZONES[id];
+      if (!data || !zDefault || !zContent) return;
+      zonePaths.forEach((p) => p.classList.toggle('is-active', p.dataset.zone === id));
+      zDefault.hidden = true;
+      zContent.hidden = false;
+      if (zName) zName.textContent = data.name;
+      if (zText) zText.textContent = data.text;
+      if (zStat) zStat.textContent = data.stat;
+    };
+    zonePaths.forEach((p) => {
+      const id = p.dataset.zone || '';
+      p.addEventListener('mouseenter', () => showZone(id));
+      p.addEventListener('focus', () => showZone(id));
+      p.addEventListener('click', () => showZone(id));
+      p.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showZone(id);
+        }
+      });
+    });
+
+    // ---- Tab B: corridors ----
+    const cName = root.querySelector<HTMLElement>('[data-corridor-name]');
+    const cTag = root.querySelector<HTMLElement>('[data-corridor-tag]');
+    const cDefaultName = cName?.textContent || '';
+    const cDefaultTag = cTag?.textContent || '';
+    const nodes = root.querySelectorAll<SVGGElement>('.world-node');
+    const showCorridor = (el: SVGGElement) => {
+      nodes.forEach((n) => n.classList.toggle('is-active', n === el));
+      const label = el.getAttribute('aria-label') || '';
+      const [name, tag] = label.split(' — ');
+      if (cName) cName.textContent = name || cDefaultName;
+      if (cTag) cTag.textContent = tag || cDefaultTag;
+    };
+    nodes.forEach((n) => {
+      n.addEventListener('mouseenter', () => showCorridor(n));
+      n.addEventListener('focus', () => showCorridor(n));
+      n.addEventListener('click', () => showCorridor(n));
+      n.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showCorridor(n);
+        }
+      });
+    });
+
+    // Draw arcs when the map first scrolls into view (only relevant if tab B opened),
+    // but pre-draw instantly if reduced motion.
+    if (reduce) {
+      root.querySelector('.world-arcs')?.classList.add('is-drawn', 'no-anim');
+    }
+  }
+</script>
+
+<style>
+  .imap {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .imap__tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background: var(--bg-pale-2);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .imap__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--text-soft);
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .imap__tab :global(svg) {
+    color: currentColor;
+  }
+  .imap__tab.is-active {
+    background: #fff;
+    color: var(--green-900);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .imap__stage {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1rem;
+    padding: clamp(1rem, 3vw, 2rem);
+    align-items: center;
+  }
+  .imap__mapwrap {
+    display: flex;
+    justify-content: center;
+  }
+  .imap__svg {
+    width: 100%;
+    height: auto;
+  }
+  .th-map {
+    max-width: 320px;
+  }
+
+  /* Thailand zones */
+  .th-zones path {
+    fill: #cfe6d8;
+    stroke: #fff;
+    stroke-width: 2;
+    cursor: pointer;
+    transition: fill 0.2s var(--ease), transform 0.2s var(--ease);
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .th-zones path:hover,
+  .th-zones path.is-active {
+    fill: var(--mint);
+  }
+  .th-zones path:focus-visible {
+    outline: 3px solid var(--green-600);
+    outline-offset: 2px;
+  }
+
+  .th-port text,
+  .world-origin text,
+  .world-node__label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--green-900);
+  }
+  .th-port__dot,
+  .world-origin__dot {
+    fill: var(--green-900);
+  }
+  .th-port__pulse {
+    fill: var(--green-600);
+    opacity: 0.35;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: portPulse 2.4s ease-out infinite;
+  }
+  @keyframes portPulse {
+    0% { transform: scale(0.6); opacity: 0.5; }
+    70% { transform: scale(2.1); opacity: 0; }
+    100% { transform: scale(2.1); opacity: 0; }
+  }
+
+  /* Info panel */
+  .imap__info {
+    background: var(--bg-pale-2);
+    border-radius: var(--radius-sm);
+    padding: 1.4rem;
+    min-height: 190px;
+  }
+  .imap__kicker {
+    display: block;
+    font-weight: 800;
+    color: var(--green-900);
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+  }
+  .imap__info p {
+    color: var(--text-soft);
+    margin: 0 0 1rem;
+  }
+  .imap__stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 1px solid var(--mint);
+    color: var(--green-900);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+  }
+  .imap__legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+  }
+  .imap__legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot--zone {
+    background: var(--mint);
+  }
+  .dot--port {
+    background: var(--green-900);
+  }
+
+  /* World map */
+  .imap__stage--world {
+    grid-template-columns: 1.5fr 1fr;
+  }
+  .world-map {
+    max-width: 620px;
+  }
+  .world-land path {
+    fill: #e3efe8;
+    stroke: #fff;
+    stroke-width: 1.5;
+  }
+  .world-arcs path {
+    stroke: var(--green-600);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .world-arcs.is-drawn path {
+    animation: drawArc 1.1s var(--ease) forwards;
+  }
+  .world-arcs.is-drawn path:nth-child(2) { animation-delay: 0.15s; }
+  .world-arcs.is-drawn path:nth-child(3) { animation-delay: 0.3s; }
+  .world-arcs.is-drawn path:nth-child(4) { animation-delay: 0.45s; }
+  .world-arcs.is-drawn path:nth-child(5) { animation-delay: 0.6s; }
+  .world-arcs.no-anim path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  @keyframes drawArc {
+    to { stroke-dashoffset: 0; }
+  }
+  .world-node {
+    cursor: pointer;
+  }
+  .world-node__hit {
+    fill: transparent;
+  }
+  .world-node__dot {
+    fill: var(--green-700);
+    transition: fill 0.2s var(--ease), r 0.2s var(--ease);
+  }
+  .world-node:hover .world-node__dot,
+  .world-node.is-active .world-node__dot {
+    fill: var(--mint);
+  }
+  .world-node:focus-visible {
+    outline: none;
+  }
+  .world-node:focus-visible .world-node__dot {
+    fill: var(--mint);
+    stroke: var(--green-900);
+    stroke-width: 2;
+  }
+  .world-origin__dot {
+    fill: var(--green-900);
+  }
+
+  @media (max-width: 760px) {
+    .imap__stage,
+    .imap__stage--world {
+      grid-template-columns: 1fr;
+    }
+    .imap__info {
+      min-height: 0;
+    }
+    .world-node__label,
+    .th-port text {
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .th-port__pulse {
+      animation: none;
+    }
+  }
+</style>

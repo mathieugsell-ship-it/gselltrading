@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  h1: string;
+  intro?: string;
+}
+const { title, description, path, h1, intro } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <section class="stub">
+    <div class="container">
+      <span class="stub__tag">Page à venir</span>
+      <h1>{h1}</h1>
+      <p>{intro ?? 'Cette page est en cours de préparation. Le contenu arrive très bientôt.'}</p>
+      <div class="stub__cta">
+        <a class="btn btn--primary btn--lg" href="/">
+          Retour à l’accueil
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a class="btn btn--outline btn--lg" href="/contact">Nous contacter</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stub {
+    padding-block: clamp(3.5rem, 9vw, 6.5rem);
+    text-align: center;
+  }
+  .stub__tag {
+    display: inline-block;
+    background: var(--bg-pale);
+    border: 1px solid var(--border);
+    color: var(--green-600);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+  }
+  .stub p {
+    color: var(--text-soft);
+    max-width: 48ch;
+    margin-inline: auto;
+    font-size: 1.05rem;
+  }
+  .stub__cta {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

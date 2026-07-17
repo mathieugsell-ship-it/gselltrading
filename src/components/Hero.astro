@@ -1,0 +1,152 @@
+---
+import Icon from './Icon.astro';
+import HeroProductShowcase from './HeroProductShowcase.astro';
+
+const bullets = [
+  'Spécialistes agro-alimentaire',
+  'Sur le terrain à Phuket',
+  'Commission transparente',
+];
+---
+
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <span class="hero__kicker">Sourcing agro-alimentaire · Thaïlande</span>
+      <h1 class="hero__title">
+        Importer des produits agro-alimentaires thaïlandais,
+        <span class="hero__accent">en toute confiance.</span>
+      </h1>
+      <p class="hero__subtitle">
+        Basés en Thaïlande, nous accompagnons les sociétés étrangères qui
+        souhaitent sourcer du riz, du thon en conserve et des produits
+        agro-alimentaires thaïs — de la sélection du fournisseur au conteneur
+        expédié. Sans stock, à commission transparente.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="/contact">
+          Discuter de votre projet
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a class="btn btn--ghost" href="/rapports">Consulter nos rapports</a>
+      </div>
+      <ul class="hero__bullets">
+        {
+          bullets.map((b) => (
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              {b}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="hero__showcase">
+      <HeroProductShowcase />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #0b2e22 0%, var(--green-900) 38%, var(--green-700) 78%, var(--green-600) 100%);
+  }
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 88% 10%, rgba(127, 217, 168, 0.2), transparent 40%),
+      radial-gradient(circle at 6% 92%, rgba(127, 217, 168, 0.12), transparent 42%);
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 58fr 42fr;
+    align-items: center;
+    gap: clamp(1.5rem, 3.5vw, 2.75rem);
+    padding-block: clamp(2.75rem, 5.5vw, 4.5rem);
+  }
+
+  .hero__kicker {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 1rem;
+  }
+  .hero__title {
+    color: #fff;
+    font-size: clamp(1.65rem, 2.4vw, 2.3rem);
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    max-width: 640px;
+    text-wrap: balance;
+    margin: 0 0 1.1rem;
+  }
+  .hero__accent {
+    color: var(--mint);
+  }
+  .hero__subtitle {
+    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 540px;
+    margin: 0 0 1.6rem;
+  }
+  .hero__cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .hero__cta .btn {
+    padding-block: 0.7rem;
+  }
+  .hero__bullets {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.35rem;
+  }
+  .hero__bullets li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .hero__bullets svg {
+    color: var(--mint);
+    flex-shrink: 0;
+  }
+
+  .hero__showcase {
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .hero__title,
+    .hero__subtitle {
+      max-width: 640px;
+    }
+  }
+</style>

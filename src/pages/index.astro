@@ -5,17 +5,11 @@ import Stat from '../components/Stat.astro';
 import Faq from '../components/Faq.astro';
 import ReportCard from '../components/ReportCard.astro';
 import CtaSection from '../components/CtaSection.astro';
-import HeroArt from '../components/HeroArt.astro';
+import Hero from '../components/Hero.astro';
 import WithWithout from '../components/WithWithout.astro';
 import InteractiveMap from '../components/InteractiveMap.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { REPORTS, SHOW_TESTIMONIALS } from '../data/site';
-
-const heroBullets = [
-  'Spécialistes agro-alimentaire',
-  'Sur le terrain à Phuket',
-  'Commission transparente',
-];
 
 const valueBadges = [
   { icon: 'scale', label: 'Sans stock' },
@@ -79,48 +73,8 @@ const description =
 ---
 
 <BaseLayout title={title} description={description} path="/" jsonLd={[faqJsonLd]}>
-  <!-- ============ 3.3 HERO ============ -->
-  <section class="hero">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="container hero__inner">
-      <div class="hero__content">
-        <h1>Importer des produits agro-alimentaires thaïlandais, en toute confiance.</h1>
-        <p class="hero__subtitle">
-          Basés en Thaïlande, nous accompagnons les sociétés étrangères qui
-          souhaitent sourcer du riz, du thon en conserve et des produits
-          agro-alimentaires thaïs — de la sélection du fournisseur au conteneur
-          expédié. Sans stock, à commission transparente.
-        </p>
-        <div class="hero__cta">
-          <a class="btn btn--primary btn--lg" href="/contact">
-            Discuter de votre projet
-            <Icon name="arrow-right" size={18} />
-          </a>
-          <a class="btn btn--ghost btn--lg" href="/rapports">Consulter nos rapports</a>
-        </div>
-        <ul class="hero__bullets">
-          {heroBullets.map((b) => (
-            <li>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-              {b}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div class="hero__art">
-        <HeroArt />
-      </div>
-    </div>
-
-    <div class="hero__statsband">
-      <div class="container hero__stats">
-        <Stat value={339} suffix=" Md$" label="exportations thaïlandaises en 2025" light />
-        <Stat display="1ᵉʳ" label="exportateur mondial de thon en conserve" light />
-        <Stat value={7.9} decimals={1} suffix=" M t" label="de riz exporté par la Thaïlande en 2025" light />
-        <Stat value={100} suffix=" %" label="de nos honoraires transparents" light />
-      </div>
-    </div>
-  </section>
+  <!-- ============ 3.3 HERO (Directive #2 — vitrine produits) ============ -->
+  <Hero />
 
   <!-- ============ 3.4 PROBLÈME + BADGES VALEUR ============ -->
   <section class="section">
@@ -360,93 +314,6 @@ const description =
 </BaseLayout>
 
 <style>
-  /* ---------- Hero ---------- */
-  .hero {
-    position: relative;
-    color: #fff;
-    overflow: hidden;
-    isolation: isolate;
-  }
-  .hero__bg {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(135deg, #0b2e22 0%, var(--green-900) 38%, var(--green-700) 78%, var(--green-600) 100%);
-  }
-  .hero__bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle at 82% 12%, rgba(127, 217, 168, 0.26), transparent 42%),
-      radial-gradient(circle at 12% 90%, rgba(127, 217, 168, 0.12), transparent 45%);
-  }
-  .hero__inner {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: center;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    padding-block: clamp(3rem, 6vw, 5rem) clamp(2.5rem, 4vw, 3.5rem);
-  }
-  .hero h1 {
-    color: #fff;
-    font-size: clamp(2.1rem, 4.6vw, 3.4rem);
-  }
-  .hero__subtitle {
-    font-size: clamp(1.02rem, 1.5vw, 1.2rem);
-    color: rgba(255, 255, 255, 0.88);
-    max-width: 42rem;
-    margin-bottom: 1.75rem;
-  }
-  .hero__cta {
-    display: flex;
-    gap: 0.9rem;
-    flex-wrap: wrap;
-  }
-  .hero__bullets {
-    list-style: none;
-    margin: 1.75rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.5rem;
-  }
-  .hero__bullets li {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.92);
-  }
-  .hero__bullets svg {
-    color: var(--mint);
-  }
-  .hero__art {
-    display: flex;
-    justify-content: center;
-  }
-  .hero__statsband {
-    position: relative;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(0, 0, 0, 0.12);
-  }
-  .hero__stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 1.25rem 1rem;
-    padding-block: clamp(1.5rem, 3vw, 2.25rem);
-  }
-  @media (max-width: 880px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-    }
-    .hero__art {
-      order: -1;
-      max-width: 380px;
-      margin-inline: auto;
-    }
-  }
-
   /* ---------- Value badges ---------- */
   .value-badges {
     list-style: none;

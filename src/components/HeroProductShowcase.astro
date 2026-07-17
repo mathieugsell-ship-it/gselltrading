@@ -1,0 +1,238 @@
+---
+import { PRODUCTS } from '../data/products';
+import ProductArt from './ProductArt.astro';
+import Icon from './Icon.astro';
+---
+
+<div class="hshow">
+  <div class="hshow__top">
+    <svg class="hshow__arc" viewBox="0 0 200 40" aria-hidden="true">
+      <path d="M6 34 C60 4 140 4 194 30" fill="none" stroke="#7fd9a8" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round" opacity="0.8" />
+      <circle cx="6" cy="34" r="3.5" fill="#7fd9a8" />
+      <circle cx="194" cy="30" r="3.5" fill="#7fd9a8" />
+    </svg>
+    <span class="hshow__toplabel">De la Thaïlande vers vos marchés</span>
+  </div>
+
+  <ul class="hshow__grid">
+    {
+      PRODUCTS.map((p) => (
+        <li class="hshow__cell">
+          <a
+            class="ps-tile"
+            style={`--accent:${p.accent}`}
+            href={p.reportUrl}
+            aria-label={`${p.nom} — consulter le rapport de marché`}
+          >
+            <span class="ps-tile__art"><ProductArt productKey={p.icon} /></span>
+            <span class="ps-tile__mname">{p.labelTuile}</span>
+            <span class="ps-tile__chip">
+              <span class="ps-tile__chipname">{p.labelTuile}</span>
+              <span class="ps-tile__go">voir le rapport <Icon name="arrow-right" size={13} /></span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <span class="hshow__hint">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0V12"/><path d="M14 10.5a2.5 2.5 0 0 1 5 0V15a6 6 0 0 1-6 6h-2a6 6 0 0 1-5.19-3l-2.3-4a2 2 0 0 1 3.46-2l1.23 2"/></svg>
+    Survolez un produit
+  </span>
+</div>
+
+<style is:global>
+  .hshow {
+    position: relative;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 22px;
+    padding: 1.25rem 1.25rem 1rem;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+  .hshow__top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    padding-inline: 0.25rem;
+  }
+  .hshow__arc {
+    width: 68px;
+    flex-shrink: 0;
+  }
+  .hshow__toplabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .hshow__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+  }
+  .hshow__cell {
+    display: flex;
+  }
+
+  .ps-tile {
+    --accent: #237a53;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 108px;
+    padding: 0.85rem 0.5rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.22s var(--ease), background 0.22s var(--ease),
+      box-shadow 0.22s var(--ease), border-color 0.22s var(--ease),
+      opacity 0.22s var(--ease);
+  }
+  .ps-tile:hover {
+    text-decoration: none;
+  }
+  .ps-tile__art {
+    display: inline-flex;
+  }
+  .prod-art {
+    width: 46px;
+    height: 46px;
+  }
+
+  /* Product illustration — REST (monochrome light green) */
+  .il-body { fill: #cbe4d5; }
+  .il-accent { fill: #b6ddc6; }
+  .il-cream { fill: #e6f3ec; }
+  .il-leaf { fill: #bcdcc8; }
+  .il-line { fill: #0f3d2e; opacity: 0.16; }
+
+  /* Product illustration — RELIEF (full colour) */
+  .ps-tile:hover .il-body,
+  .ps-tile:focus-visible .il-body { fill: var(--accent); }
+  .ps-tile:hover .il-accent,
+  .ps-tile:focus-visible .il-accent { fill: #7fd9a8; }
+  .ps-tile:hover .il-cream,
+  .ps-tile:focus-visible .il-cream { fill: #f4faf6; }
+  .ps-tile:hover .il-leaf,
+  .ps-tile:focus-visible .il-leaf { fill: #2f9e63; }
+  .ps-tile:hover .il-line,
+  .ps-tile:focus-visible .il-line { opacity: 0.3; }
+
+  /* Relief lift + ring */
+  .ps-tile:hover,
+  .ps-tile:focus-visible {
+    transform: scale(1.06);
+    background: rgba(255, 255, 255, 0.16);
+    border-color: var(--mint);
+    box-shadow: 0 0 0 2px rgba(127, 217, 168, 0.55), 0 16px 34px rgba(0, 0, 0, 0.32);
+    z-index: 3;
+    outline: none;
+  }
+  /* Dim the others when one is engaged */
+  .hshow:hover .ps-tile:not(:hover),
+  .hshow:focus-within .ps-tile:not(:focus-visible):not(:hover) {
+    opacity: 0.5;
+  }
+
+  /* Permanent mini-name — hidden on desktop, shown on touch */
+  .ps-tile__mname {
+    display: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.2;
+  }
+
+  /* Hover chip (desktop) */
+  .ps-tile__chip {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    background: #fff;
+    color: var(--green-900);
+    border-radius: 10px;
+    padding: 0.4rem 0.4rem;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .ps-tile:hover .ps-tile__chip,
+  .ps-tile:focus-visible .ps-tile__chip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ps-tile__chipname {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.15;
+  }
+  .ps-tile__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--green-600);
+  }
+
+  .hshow__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+    padding-inline: 0.25rem;
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.6);
+    transition: opacity 0.2s var(--ease);
+  }
+  .hshow:hover .hshow__hint,
+  .hshow:focus-within .hshow__hint {
+    opacity: 0;
+  }
+
+  /* -------- Touch / mobile: no hover → permanent labels, tap navigates -------- */
+  @media (hover: none), (max-width: 600px) {
+    .ps-tile__mname { display: block; }
+    .ps-tile__chip { display: none; }
+    .hshow__hint { display: none; }
+    .hshow:hover .ps-tile:not(:hover) { opacity: 1; }
+    /* Show relief colours at rest on touch so tiles aren't all grey-green */
+    .ps-tile .il-body { fill: var(--accent); }
+    .ps-tile .il-accent { fill: #7fd9a8; }
+    .ps-tile .il-cream { fill: #f4faf6; }
+    .ps-tile .il-leaf { fill: #2f9e63; }
+    .ps-tile .il-line { opacity: 0.3; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ps-tile,
+    .ps-tile__chip,
+    .hshow__hint { transition: none; }
+    .ps-tile:hover,
+    .ps-tile:focus-visible { transform: none; }
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  slug: string;
+  title: string;
+  summary: string;
+  icon?: string;
+}
+const { slug, title, summary, icon = 'file-text' } = Astro.props;
+---
+
+<a class="card card--hover report-card" href={`/rapports/${slug}`}>
+  <span class="card__icon"><Icon name={icon} /></span>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  <span class="arrow-link report-card__link">
+    Lire le rapport
+    <Icon name="arrow-right" size={18} />
+  </span>
+</a>
+
+<style>
+  .report-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .report-card p {
+    flex: 1;
+  }
+  .report-card__link {
+    margin-top: 1.1rem;
+  }
+</style>

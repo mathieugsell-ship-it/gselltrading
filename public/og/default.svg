@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Gselltrading — Sourcing agro-alimentaire en Thaïlande">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b2e22"/>
+      <stop offset="0.45" stop-color="#0f3d2e"/>
+      <stop offset="0.85" stop-color="#1a5c42"/>
+      <stop offset="1" stop-color="#237a53"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.15" r="0.6">
+      <stop offset="0" stop-color="#7fd9a8" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#7fd9a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <text x="90" y="150" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="2" fill="#7fd9a8">GSELL<tspan fill="#ffffff">TRADING</tspan></text>
+  <text x="90" y="315" font-family="Inter, Arial, sans-serif" font-size="66" font-weight="800" fill="#ffffff">Sourcing agro-alimentaire</text>
+  <text x="90" y="395" font-family="Inter, Arial, sans-serif" font-size="66" font-weight="800" fill="#ffffff">en Thaïlande</text>
+  <text x="90" y="475" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="500" fill="#cfe9db">Courtier sur le terrain · sans stock · commission transparente</text>
+  <rect x="90" y="520" width="150" height="6" rx="3" fill="#7fd9a8"/>
+</svg>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  /** Numeric target for the animated counter. Omit for a static value. */
+  value?: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  /** Static display used when there is no numeric value (e.g. "1ᵉʳ"). */
+  display?: string;
+  label: string;
+  light?: boolean;
+}
+const {
+  value,
+  decimals = 0,
+  prefix = '',
+  suffix = '',
+  display,
+  label,
+  light = false,
+} = Astro.props;
+const initial =
+  display ?? `${prefix}${(0).toFixed(decimals).replace('.', ',')}${suffix}`;
+---
+
+<div class:list={['stat', { 'stat--light': light }]}>
+  {
+    value !== undefined ? (
+      <span
+        class="stat__value"
+        data-count={value}
+        data-decimals={decimals}
+        data-prefix={prefix}
+        data-suffix={suffix}
+      >
+        {initial}
+      </span>
+    ) : (
+      <span class="stat__value">{display}</span>
+    )
+  }
+  <span class="stat__label">{label}</span>
+</div>
+
+<style>
+  .stat--light .stat__value {
+    color: #fff;
+  }
+  .stat--light .stat__label {
+    color: rgba(255, 255, 255, 0.75);
+  }
+</style>

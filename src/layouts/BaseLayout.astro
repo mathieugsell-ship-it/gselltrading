@@ -1,0 +1,233 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileCTA from '../components/MobileCTA.astro';
+import {
+  SITE,
+  SITE_INDEXABLE,
+  organizationJsonLd,
+  webSiteJsonLd,
+} from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path only, e.g. "/services". Canonical/OG url is built from SITE.url. */
+  path: string;
+  ogType?: string;
+  /** Extra JSON-LD blocks (Service, Article, BreadcrumbList, FAQPage…). */
+  jsonLd?: unknown[];
+  /** Force noindex regardless of global flag (e.g. mentions légales). */
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  ogType = 'website',
+  jsonLd = [],
+  noindex = false,
+  ogImage = '/og/default.svg',
+} = Astro.props;
+
+const canonical = new URL(path, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
+const robots = !SITE_INDEXABLE || noindex ? 'noindex, nofollow' : 'index, follow';
+
+const structuredData = [organizationJsonLd(), webSiteJsonLd(), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content={robots} />
+    <!-- Progressive enhancement flag: scroll-reveal only hides when JS runs. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts: preconnect + Inter with font-display: swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+
+    {
+      structuredData.map((data) => (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(data)}
+        />
+      ))
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Aller au contenu</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileCTA />
+
+    <script>
+      // --- Header densify on scroll ---
+      const header = document.querySelector('[data-header]');
+      const onScroll = () => {
+        if (window.scrollY > 24) header?.classList.add('is-scrolled');
+        else header?.classList.remove('is-scrolled');
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // --- Mobile menu toggle ---
+      const burger = document.querySelector('[data-burger]');
+      const nav = document.querySelector('[data-nav]');
+      burger?.addEventListener('click', () => {
+        const open = header?.classList.toggle('is-menu-open');
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.classList.toggle('no-scroll', !!open);
+      });
+      nav?.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          header?.classList.remove('is-menu-open');
+          burger?.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('no-scroll');
+        })
+      );
+
+      const reduce = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      // --- Scroll reveal ---
+      const reveals = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+
+      // --- Animated stat counters ---
+      const counters =
+        document.querySelectorAll<HTMLElement>('[data-count]');
+      const animateCount = (el: HTMLElement) => {
+        const target = parseFloat(el.dataset.count || '0');
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        if (reduce) {
+          el.textContent =
+            prefix + target.toLocaleString('fr-FR', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }) + suffix;
+          return;
+        }
+        const duration = 1600;
+        let start: number | null = null;
+        const step = (ts: number) => {
+          if (start === null) start = ts;
+          const p = Math.min((ts - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const val = target * eased;
+          el.textContent =
+            prefix +
+            val.toLocaleString('fr-FR', {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            }) +
+            suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      if (counters.length) {
+        if (!('IntersectionObserver' in window)) {
+          counters.forEach(animateCount);
+        } else {
+          const co = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  animateCount(entry.target as HTMLElement);
+                  co.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.5 }
+          );
+          counters.forEach((el) => co.observe(el));
+        }
+      }
+
+      // --- FAQ accordion (one open at a time) ---
+      const faqItems =
+        document.querySelectorAll<HTMLButtonElement>('[data-faq-trigger]');
+      faqItems.forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          faqItems.forEach((t) => {
+            t.setAttribute('aria-expanded', 'false');
+            const panel = document.getElementById(
+              t.getAttribute('aria-controls') || ''
+            );
+            if (panel) panel.hidden = true;
+          });
+          if (!expanded) {
+            trigger.setAttribute('aria-expanded', 'true');
+            const panel = document.getElementById(
+              trigger.getAttribute('aria-controls') || ''
+            );
+            if (panel) panel.hidden = false;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

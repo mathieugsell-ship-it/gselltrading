@@ -1,0 +1,475 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Stat from '../components/Stat.astro';
+import Faq from '../components/Faq.astro';
+import ReportCard from '../components/ReportCard.astro';
+import CtaSection from '../components/CtaSection.astro';
+import { REPORTS, SITE } from '../data/site';
+
+const services = [
+  {
+    icon: 'search',
+    title: 'Sourcing & sélection',
+    text: 'Identifier des fournisseurs fiables, adaptés à votre cahier des charges.',
+  },
+  {
+    icon: 'shield-check',
+    title: 'Vérification & anti-fraude',
+    text: 'Contrôler l’existence, la fiabilité et la conformité avant tout engagement.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Négociation',
+    text: 'Défendre vos intérêts sur le prix, les volumes et les conditions de paiement.',
+  },
+  {
+    icon: 'badge-check',
+    title: 'Qualité & conformité',
+    text: 'Coordonner inspections, certifications et documents d’export.',
+  },
+  {
+    icon: 'truck',
+    title: 'Logistique & suivi',
+    text: 'Accompagner l’expédition, de l’empotage au conteneur livré.',
+  },
+];
+
+const process = [
+  {
+    title: 'Cadrage',
+    text: 'On clarifie votre besoin, vos volumes et vos contraintes.',
+  },
+  {
+    title: 'Sourcing',
+    text: 'On identifie et présélectionne des fournisseurs pertinents.',
+  },
+  {
+    title: 'Vérification',
+    text: 'On sécurise : existence, fiabilité, conformité, échantillons.',
+  },
+  {
+    title: 'Négociation & contrat',
+    text: 'On obtient les meilleures conditions et on cadre l’accord.',
+  },
+  {
+    title: 'Exécution & suivi',
+    text: 'On accompagne qualité, documents et expédition jusqu’au bout.',
+  },
+];
+
+const differentiators = [
+  {
+    icon: 'sprout',
+    title: 'Spécialistes de l’agro-alimentaire',
+    text: 'Pas des généralistes : nous connaissons le riz, le thon et les filières agro thaïes.',
+  },
+  {
+    icon: 'map-pin',
+    title: 'Sur le terrain, à Phuket',
+    text: 'Une présence locale réelle, pas un intermédiaire à distance.',
+  },
+  {
+    icon: 'wallet',
+    title: 'Commission transparente',
+    text: 'Nous sommes payés par vous, pour défendre vos intérêts — jamais de marge cachée côté fournisseur.',
+  },
+  {
+    icon: 'scale',
+    title: 'Sans stock, sans conflit d’intérêt',
+    text: 'Nous ne vous vendons pas notre marchandise : nous trouvons la vôtre.',
+  },
+  {
+    icon: 'languages',
+    title: 'Bilingues FR / EN',
+    text: 'Un interlocuteur unique, dans votre langue, entre vous et le marché thaï.',
+  },
+];
+
+const faq = [
+  {
+    q: 'Faut-il une société en Thaïlande pour importer ?',
+    a: 'Non : vous achetez depuis votre pays. C’est l’exportateur thaï qui doit être agréé — nous nous assurons que c’est bien le cas et que la chaîne documentaire est en règle.',
+  },
+  {
+    q: 'Comment êtes-vous rémunérés ?',
+    a: 'À la commission, transparente et convenue à l’avance. Nous ne prenons pas de marge cachée côté fournisseur.',
+  },
+  {
+    q: 'Travaillez-vous avec de petits volumes ?',
+    a: 'Oui, y compris pour un premier conteneur d’essai. Nous accompagnons aussi les primo-importateurs.',
+  },
+  {
+    q: 'Quels produits couvrez-vous ?',
+    a: 'L’agro-alimentaire thaï : riz, thon en conserve, produits halal et agro-transformés.',
+  },
+  {
+    q: 'Où êtes-vous basés ?',
+    a: 'En Thaïlande, à Phuket, avec un accès direct au terrain.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const title = 'Gselltrading — Sourcing agro-alimentaire en Thaïlande';
+const description =
+  'Courtier agro-alimentaire sur le terrain en Thaïlande. Nous accompagnons les importateurs étrangers : sourcing, vérification, négociation et suivi, sans stock et à commission transparente.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path="/"
+  jsonLd={[faqJsonLd]}
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <h1>Importer des produits agro-alimentaires thaïlandais, en toute confiance.</h1>
+        <p class="hero__subtitle">
+          Basés en Thaïlande, nous accompagnons les sociétés étrangères qui
+          souhaitent sourcer du riz, du thon en conserve et des produits
+          agro-alimentaires thaïs — de la sélection du fournisseur au conteneur
+          expédié. Sans stock, à commission transparente.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg" href="/contact">
+            Discuter de votre projet
+            <Icon name="arrow-right" size={18} />
+          </a>
+          <a class="btn btn--ghost btn--lg" href="/rapports">
+            Consulter nos rapports
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__stats">
+        <Stat value={339} suffix=" Md$" label="exportations thaïlandaises en 2025" light />
+        <Stat display="1ᵉʳ" label="exportateur mondial de thon en conserve" light />
+        <Stat value={7.9} decimals={1} suffix=" M t" label="de riz exporté par la Thaïlande en 2025" light />
+        <Stat value={100} suffix=" %" label="de nos honoraires transparents" light />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLÈME -->
+  <section class="section">
+    <div class="container section__head reveal">
+      <span class="eyebrow">Le constat</span>
+      <h2>Sourcer en Thaïlande peut coûter cher quand on s’y prend seul.</h2>
+      <p class="lead">
+        Fournisseurs difficiles à vérifier, barrière de la langue, licences
+        d’export, contrôle qualité, termes de paiement risqués : chaque maillon
+        mal maîtrisé pèse sur la marge — ou expose à la fraude. Notre métier est
+        de sécuriser cette chaîne pour vous, sur le terrain.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section--pale">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Nos services</span>
+        <h2>Un accompagnement de bout en bout</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          services.map((s) => (
+            <div class="card reveal">
+              <span class="card__icon"><Icon name={s.icon} /></span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="reveal" style="margin-top:1.75rem">
+        <a class="arrow-link" href="/services">
+          Découvrir tous nos services
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- MÉTHODE / PROCESS -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Notre méthode</span>
+        <h2>Comment nous travaillons</h2>
+      </div>
+      <ol class="timeline">
+        {
+          process.map((step, i) => (
+            <li class="timeline__item reveal">
+              <span class="timeline__num">{i + 1}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOUS -->
+  <section class="section section--pale-2">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Nos différences</span>
+        <h2>Ce qui nous distingue</h2>
+      </div>
+      <div class="grid grid--3">
+        {
+          differentiators.map((d) => (
+            <div class="card reveal">
+              <span class="card__icon"><Icon name={d.icon} /></span>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CONFIANCE / ANTI-FRAUDE -->
+  <section class="section trust">
+    <div class="container trust__inner reveal">
+      <div class="trust__icon" aria-hidden="true">
+        <Icon name="shield-check" size={40} />
+      </div>
+      <div>
+        <span class="eyebrow">Confiance & protection</span>
+        <h2>Acheter à distance, sans les mauvaises surprises</h2>
+        <p class="lead">
+          Les arnaques au sourcing existent : sociétés fictives, faux documents
+          d’expédition, virements détournés, qualité qui se dégrade entre
+          l’échantillon et le conteneur. Notre rôle est d’interposer une
+          vérification rigoureuse et une présence physique entre vous et ces
+          risques. Nous privilégions toujours des conditions de paiement
+          protectrices et un contrôle qualité avant expédition.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RAPPORTS TEASER -->
+  <section class="section section--pale">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Notre lecture du marché</span>
+        <h2>Nos rapports</h2>
+        <p class="lead">
+          Nous publions des analyses sectorielles pour partager notre lecture
+          des filières agro-alimentaires thaïes — chiffres à l’appui.
+        </p>
+      </div>
+      <div class="grid grid--3">
+        {
+          REPORTS.map((r) => (
+            <div class="reveal">
+              <ReportCard slug={r.slug} title={r.shortTitle} summary={r.summary} />
+            </div>
+          ))
+        }
+      </div>
+      <p class="reveal" style="margin-top:1.75rem">
+        <a class="arrow-link" href="/rapports">
+          Voir tous les rapports
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions fréquentes</h2>
+      </div>
+      <div class="reveal">
+        <Faq items={faq} idPrefix="home-faq" />
+      </div>
+    </div>
+  </section>
+
+  <CtaSection
+    title="Parlons de votre projet d’import."
+    text="Décrivez-nous votre besoin — nous vous répondons rapidement."
+    buttonLabel="Nous contacter"
+  />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      #0b2e22 0%,
+      var(--green-900) 38%,
+      var(--green-700) 78%,
+      var(--green-600) 100%
+    );
+  }
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+        circle at 82% 12%,
+        rgba(127, 217, 168, 0.28),
+        transparent 42%
+      ),
+      radial-gradient(circle at 12% 88%, rgba(127, 217, 168, 0.14), transparent 45%);
+  }
+  .hero__inner {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .hero__content {
+    max-width: 46rem;
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: clamp(2.1rem, 5.2vw, 3.5rem);
+  }
+  .hero__subtitle {
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 44rem;
+    margin-bottom: 2rem;
+  }
+  .hero__cta {
+    display: flex;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .hero__stats {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: clamp(2rem, 4vw, 2.75rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem 1rem;
+  }
+
+  /* Timeline */
+  .timeline {
+    list-style: none;
+    counter-reset: step;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    position: relative;
+  }
+  .timeline__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    position: relative;
+  }
+  .timeline__num {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--green-900);
+    color: var(--mint);
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .timeline__item h3 {
+    margin-bottom: 0.25rem;
+  }
+  .timeline__item p {
+    margin: 0;
+    color: var(--text-soft);
+  }
+  @media (min-width: 760px) {
+    .timeline {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    .timeline__item {
+      flex-direction: column;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 23px;
+      left: 8%;
+      right: 8%;
+      height: 2px;
+      background: linear-gradient(
+        to right,
+        var(--mint),
+        var(--green-600)
+      );
+      z-index: 0;
+    }
+    .timeline__num {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  /* Trust */
+  .trust__inner {
+    display: flex;
+    gap: 1.75rem;
+    align-items: flex-start;
+    background: var(--bg-pale);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+  }
+  .trust__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 18px;
+    background: #fff;
+    color: var(--green-600);
+    box-shadow: var(--shadow-sm);
+  }
+  .trust h2 {
+    margin-bottom: 0.75rem;
+  }
+  @media (max-width: 560px) {
+    .trust__inner {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+  }
+</style>

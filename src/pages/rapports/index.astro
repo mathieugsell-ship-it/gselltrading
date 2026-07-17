@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReportCard from '../../components/ReportCard.astro';
+
+const title =
+  'Rapports sur les marchés agro-alimentaires thaïlandais | Gselltrading';
+const description =
+  'Nos analyses des filières agro-alimentaires de Thaïlande : panorama du secteur, marché du riz, marché du thon en conserve. Chiffres clés et lecture d’experts.';
+
+const cards = [
+  {
+    slug: 'panorama-agroalimentaire-thailande',
+    title: 'Panorama de l’agro-alimentaire thaïlandais',
+    summary:
+      'Où en est le secteur, quels moteurs, quelles opportunités en 2025-2026.',
+    icon: 'globe',
+  },
+  {
+    slug: 'marche-riz-thailande',
+    title: 'Le marché du riz thaïlandais',
+    summary:
+      'Volumes, prix, variétés et débouchés d’un pilier de l’export thaï.',
+    icon: 'sprout',
+  },
+  {
+    slug: 'marche-thon-conserve-thailande',
+    title: 'Le marché du thon en conserve',
+    summary:
+      'Comment la Thaïlande domine ce marché mondial, et où se trouve la croissance.',
+    icon: 'fish',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/rapports">
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Rapports</span>
+      <h1>Nos rapports de marché</h1>
+      <p class="lead">
+        Nous partageons ici notre lecture des filières agro-alimentaires
+        thaïlandaises : les grandes tendances, les chiffres qui comptent et ce
+        qu’ils impliquent pour un acheteur étranger. Une vision globale et
+        sourcée — le reste, c’est notre métier de terrain.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {
+          cards.map((c) => (
+            <div class="reveal">
+              <ReportCard
+                slug={c.slug}
+                title={c.title}
+                summary={c.summary}
+                icon={c.icon}
+              />
+            </div>
+          ))
+        }
+      </div>
+      <p class="note" style="max-width:74ch">
+        Les chiffres de nos rapports sont mis à jour à chaque révision
+        (<code>dateModified</code>) au fil de l’évolution des marchés.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--bg-pale-2);
+    border-bottom: 1px solid var(--border);
+    padding-block: clamp(2.75rem, 6vw, 4.5rem);
+  }
+  code {
+    background: var(--bg-pale);
+    padding: 0.1em 0.4em;
+    border-radius: 5px;
+    font-size: 0.85em;
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  title: string;
+  text?: string;
+  buttonLabel: string;
+  buttonHref?: string;
+}
+const {
+  title,
+  text,
+  buttonLabel,
+  buttonHref = '/contact',
+} = Astro.props;
+---
+
+<section class="cta-band">
+  <div class="container cta-band__inner reveal">
+    <div>
+      <h2>{title}</h2>
+      {text && <p>{text}</p>}
+    </div>
+    <a class="btn btn--primary btn--lg" href={buttonHref}>
+      {buttonLabel}
+      <Icon name="arrow-right" size={18} />
+    </a>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    background: linear-gradient(120deg, var(--green-900), var(--green-600));
+    color: #fff;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .cta-band__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta-band h2 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .cta-band p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 52ch;
+  }
+</style>

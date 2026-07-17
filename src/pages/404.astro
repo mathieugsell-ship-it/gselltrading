@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+
+const title = 'Page introuvable | Gselltrading';
+const description = 'La page demandée n’existe pas ou a été déplacée.';
+---
+
+<BaseLayout title={title} description={description} path="/404" noindex={true}>
+  <section class="notfound">
+    <div class="container">
+      <span class="notfound__code">404</span>
+      <h1>Cette page n’existe pas (ou plus)</h1>
+      <p class="lead">
+        Le lien est peut-être erroné ou la page a été déplacée. Reprenons depuis
+        le début.
+      </p>
+      <div class="notfound__cta">
+        <a class="btn btn--primary btn--lg" href="/">
+          Retour à l’accueil
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a class="btn btn--outline btn--lg" href="/rapports">
+          Consulter nos rapports
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: clamp(4rem, 10vw, 7rem);
+    text-align: center;
+  }
+  .notfound__code {
+    display: block;
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--mint);
+  }
+  .notfound h1 {
+    margin-top: 0.5rem;
+  }
+  .notfound .lead {
+    margin-inline: auto;
+  }
+  .notfound__cta {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

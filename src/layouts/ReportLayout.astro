@@ -1,0 +1,168 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, REPORTS } from '../data/site';
+
+interface Props {
+  slug: string;
+  title: string; // SEO <title>
+  h1: string;
+  description: string;
+  chapo: string;
+  breadcrumbLabel: string;
+  datePublished: string;
+  dateModified: string;
+  ctaLabel: string;
+  note: string;
+}
+
+const {
+  slug,
+  title,
+  h1,
+  description,
+  chapo,
+  breadcrumbLabel,
+  datePublished,
+  dateModified,
+  ctaLabel,
+  note,
+} = Astro.props;
+
+const path = `/rapports/${slug}`;
+const url = new URL(path, SITE.url).href;
+
+// The two OTHER reports, for internal linking
+const others = REPORTS.filter((r) => r.slug !== slug);
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: h1,
+  description,
+  datePublished,
+  dateModified,
+  inLanguage: 'fr',
+  author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE.url}/favicon.svg`,
+    },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: SITE.url },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Rapports',
+      item: `${SITE.url}/rapports`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: breadcrumbLabel,
+      item: url,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  ogType="article"
+  jsonLd={[articleJsonLd, breadcrumbJsonLd]}
+>
+  <section class="report-hero">
+    <div class="container">
+      <Breadcrumb
+        items={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Rapports', href: '/rapports' },
+          { label: breadcrumbLabel },
+        ]}
+      />
+      <h1>{h1}</h1>
+      <p class="report-hero__chapo">{chapo}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <article class="prose report-body reveal">
+        <slot />
+
+        <div class="callout report-links">
+          <p>
+            <strong>Approfondir</strong> →
+            {
+              others.map((o, i) => (
+                <>
+                  <a href={`/rapports/${o.slug}`}>{o.shortTitle}</a>
+                  {i < others.length - 1 && ' · '}
+                </>
+              ))
+            }
+          </p>
+        </div>
+
+        <p class="report-cta">
+          <a class="btn btn--primary btn--lg" href="/contact">
+            {ctaLabel}
+            <Icon name="arrow-right" size={18} />
+          </a>
+        </p>
+
+        <p class="note">{note}</p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .report-hero {
+    background: linear-gradient(135deg, var(--green-900), var(--green-700));
+    color: #fff;
+    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .report-hero :global(.breadcrumb a),
+  .report-hero :global(.breadcrumb span),
+  .report-hero :global(.breadcrumb__sep) {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .report-hero :global(.breadcrumb span[aria-current='page']) {
+    color: #fff;
+  }
+  .report-hero :global(.breadcrumb a:hover) {
+    color: var(--mint);
+  }
+  .report-hero h1 {
+    color: #fff;
+    margin-top: 1.25rem;
+    max-width: 22ch;
+  }
+  .report-hero__chapo {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1.05rem, 1.7vw, 1.2rem);
+    max-width: 62ch;
+    margin: 0;
+  }
+  .report-body {
+    max-width: 74ch;
+    margin-inline: auto;
+  }
+  .report-cta {
+    margin-top: 2rem;
+  }
+</style>

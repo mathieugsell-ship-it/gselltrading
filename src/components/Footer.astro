@@ -1,0 +1,135 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { SITE, NAV, REPORTS } from '../data/site';
+const year = 2026;
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <Logo light />
+      <p>{SITE.tagline}</p>
+    </div>
+
+    <nav aria-label="Navigation" class="site-footer__col">
+      <h2>Navigation</h2>
+      <ul>
+        {NAV.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav aria-label="Rapports" class="site-footer__col">
+      <h2>Rapports</h2>
+      <ul>
+        {
+          REPORTS.map((r) => (
+            <li>
+              <a href={`/rapports/${r.slug}`}>{r.shortTitle}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-footer__col">
+      <h2>Contact</h2>
+      <ul class="site-footer__contact">
+        <li>
+          <Icon name="mail" size={18} />
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
+        <li>
+          <Icon name="map-pin" size={18} />
+          <span>{SITE.address.display}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p>© {year} {SITE.name}. {SITE.legalEntity}.</p>
+    <a href="/mentions-legales">Mentions légales</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--green-900);
+    color: rgba(255, 255, 255, 0.85);
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+    margin-top: auto;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    gap: 2.5rem 2rem;
+    padding-bottom: 2.5rem;
+  }
+  .site-footer__brand p {
+    margin-top: 1rem;
+    max-width: 30ch;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+  }
+  .site-footer h2 {
+    color: #fff;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .site-footer a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .site-footer a:hover {
+    color: var(--mint);
+    text-decoration: none;
+  }
+  .site-footer__contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .site-footer__contact :global(svg) {
+    color: var(--mint);
+    flex-shrink: 0;
+  }
+  .site-footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding-block: 1.4rem 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .site-footer__bottom a {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  @media (max-width: 760px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 460px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

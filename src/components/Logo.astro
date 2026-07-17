@@ -1,0 +1,40 @@
+---
+import { SITE } from '../data/site';
+interface Props {
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+---
+
+<a class="logo" href="/" aria-label={`${SITE.name} — accueil`}>
+  <span class:list={['logo__text', { 'logo__text--light': light }]}>
+    {SITE.logoParts.plain}<span class="logo__accent">{SITE.logoParts.accent}</span>
+  </span>
+</a>
+
+<style>
+  .logo {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .logo__text {
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--green-900);
+    line-height: 1;
+  }
+  .logo__text--light {
+    color: #fff;
+  }
+  .logo__accent {
+    color: var(--green-600);
+  }
+  .logo__text--light .logo__accent {
+    color: var(--mint);
+  }
+  .logo:hover {
+    text-decoration: none;
+  }
+</style>

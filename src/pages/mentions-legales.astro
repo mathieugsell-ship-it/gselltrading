@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/site';
+
+const title = 'Mentions légales | Gselltrading';
+const description =
+  'Mentions légales du site Gselltrading.com : éditeur, hébergeur, propriété intellectuelle et contact.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path="/mentions-legales"
+  noindex={true}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Informations légales</span>
+      <h1>Mentions légales</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <article class="prose">
+        <h2>Éditeur du site</h2>
+        <p>
+          Le site <strong>{SITE.domain}</strong> est édité par
+          {SITE.legalEntity}, {SITE.address.display}.<br />
+          Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+
+        <h2>Directeur de la publication</h2>
+        <p>{SITE.founderName}.</p>
+
+        <h2>Hébergement</h2>
+        <p>
+          Le site est hébergé par <strong>Cloudflare, Inc.</strong>, 101
+          Townsend Street, San Francisco, CA 94107, États-Unis —
+          <a href="https://www.cloudflare.com" rel="noopener">cloudflare.com</a>.
+        </p>
+
+        <h2>Propriété intellectuelle</h2>
+        <p>
+          L’ensemble des contenus présents sur ce site (textes, analyses,
+          rapports de marché, éléments graphiques, logo) est la propriété de
+          {SITE.name}, sauf mention contraire. Toute reproduction, représentation
+          ou diffusion, totale ou partielle, sans autorisation écrite préalable,
+          est interdite.
+        </p>
+
+        <h2>Données & contact</h2>
+        <p>
+          Les informations transmises via le formulaire de contact sont
+          utilisées uniquement pour répondre à votre demande. Pour toute question
+          relative à vos données, écrivez-nous à
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--bg-pale-2);
+    border-bottom: 1px solid var(--border);
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  }
+</style>

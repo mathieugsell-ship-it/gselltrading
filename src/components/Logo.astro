@@ -22,17 +22,16 @@ const { light = false } = Astro.props;
     font-weight: 800;
     font-size: 1.25rem;
     letter-spacing: -0.02em;
-    color: var(--green-900);
+    color: var(--text-heading);
     line-height: 1;
   }
   .logo__text--light {
-    color: #fff;
+    color: var(--text-inverse);
   }
-  .logo__accent {
-    color: var(--green-600);
-  }
+  /* « TRADING » toujours en ambre (accent chaud), sur fond clair comme sombre */
+  .logo__accent,
   .logo__text--light .logo__accent {
-    color: var(--mint);
+    color: var(--accent);
   }
   .logo:hover {
     text-decoration: none;

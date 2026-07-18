@@ -1,26 +1,29 @@
 /* ============================================================
-   Gselltrading — design system (brief §3)
+   Gselltrading — design system
+   Couleurs : voir tokens.css (pétrole + ambre, source unique).
    ============================================================ */
 
+@import './tokens.css';
+
 :root {
-  /* Palette */
-  --green-900: #0f3d2e; /* primaire — header/footer/titres */
-  --green-700: #1a5c42;
-  --green-600: #237a53;
-  --mint: #7fd9a8; /* accent */
-  --mint-soft: #a9e6c4;
+  /* Alias legacy → nouveaux tokens (recolore tout le site) */
+  --green-900: var(--color-petrol-900); /* fonds sombres, logo, footer */
+  --green-700: var(--color-petrol-800);
+  --green-600: var(--color-petrol-600);
+  --mint: var(--color-amber-500); /* accent → ambre */
+  --mint-soft: var(--color-amber-300);
 
-  --bg: #ffffff;
-  --bg-pale: #eef7f1;
-  --bg-pale-2: #f6faf7;
+  --bg: var(--color-cream);
+  --bg-pale: var(--color-petrol-50);
+  --bg-pale-2: var(--color-offwhite);
 
-  --text: #24302a;
-  --text-soft: #6a8478;
+  --text: var(--color-charcoal);
+  --text-soft: var(--color-slate);
 
-  --border: #dbe9e1;
-  --shadow-sm: 0 1px 2px rgba(15, 61, 46, 0.06);
-  --shadow-md: 0 6px 24px rgba(15, 61, 46, 0.10);
-  --shadow-lg: 0 18px 48px rgba(15, 61, 46, 0.16);
+  --border: var(--color-border);
+  --shadow-sm: 0 1px 2px rgba(11, 46, 52, 0.07);
+  --shadow-md: 0 6px 24px rgba(11, 46, 52, 0.12);
+  --shadow-lg: 0 18px 48px rgba(11, 46, 52, 0.18);
 
   /* Type */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
@@ -62,17 +65,19 @@ svg {
   max-width: 100%;
 }
 a {
-  color: var(--green-600);
+  color: var(--color-petrol-600);
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 2px;
 }
 h1,
 h2,
 h3,
 h4 {
-  color: var(--green-900);
+  color: var(--text-heading);
   line-height: 1.15;
   font-weight: 800;
   letter-spacing: -0.015em;
@@ -95,7 +100,7 @@ ul {
   padding-left: 1.15rem;
 }
 strong {
-  color: var(--green-900);
+  color: var(--text-heading);
   font-weight: 700;
 }
 
@@ -181,11 +186,12 @@ strong {
 }
 .btn--outline {
   background: transparent;
-  color: var(--green-900);
-  border-color: var(--border);
+  color: var(--brand);
+  border-color: var(--brand);
 }
 .btn--outline:hover {
-  border-color: var(--green-600);
+  background: var(--bg-veil);
+  border-color: var(--color-petrol-800);
 }
 .btn--lg {
   padding: 1rem 1.7rem;
@@ -223,7 +229,7 @@ strong {
 }
 
 .card {
-  background: #fff;
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.6rem;
@@ -359,7 +365,7 @@ a.card:hover,
   top: 0.75rem;
 }
 :focus-visible {
-  outline: 3px solid var(--green-600);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: 4px;
 }

@@ -1,0 +1,51 @@
+/* ============================================================
+   Gselltrading — système de couleurs (source unique de vérité)
+   Identité : pétrole profond (teal) + ambre, sur base crème.
+   Aucune couleur en dur ailleurs : tout passe par ces tokens.
+   ============================================================ */
+
+:root {
+  /* ---- Marque : pétrole ---- */
+  --color-petrol-900: #0b2e34; /* header, footer, fonds sombres */
+  --color-petrol-800: #0e3a40; /* identité principale : titres, logo */
+  --color-petrol-600: #1c5f68; /* liens, survols, bordures actives */
+  --color-petrol-300: #7fb3b8; /* teal clair : accents sur fond sombre */
+  --color-petrol-50: #eaf2f2; /* voile pâle : sections alternées */
+
+  /* ---- Accent chaud : ambre ---- */
+  --color-amber-500: #d98a2b; /* accent principal : CTA, soulignés, halos */
+  --color-amber-300: #efc183; /* survols doux, fonds d'étiquette */
+  --color-amber-50: #fbf1e2; /* fond d'encadré chaud */
+
+  /* ---- Neutres ---- */
+  --color-cream: #f6f2e9; /* fond clair principal */
+  --color-offwhite: #fcfaf6; /* fond alterné / cartes */
+  --color-white: #ffffff;
+  --color-charcoal: #1f2a2c; /* texte courant */
+  --color-slate: #5c6b6d; /* texte secondaire */
+  --color-border: #dee5e3;
+
+  /* ---- Tokens sémantiques (à utiliser dans les composants) ---- */
+  --bg-page: var(--color-cream);
+  --bg-surface: var(--color-white);
+  --bg-alt: var(--color-offwhite);
+  --bg-veil: var(--color-petrol-50);
+  --bg-warm: var(--color-amber-50);
+  --bg-inverse: var(--color-petrol-900);
+
+  --text-primary: var(--color-charcoal);
+  --text-secondary: var(--color-slate);
+  --text-heading: var(--color-petrol-800);
+  --text-inverse: var(--color-offwhite);
+
+  --brand: var(--color-petrol-800);
+  --brand-strong: var(--color-petrol-900);
+  --brand-hover: var(--color-petrol-600);
+  --accent: var(--color-amber-500);
+  --accent-hover: var(--color-amber-300);
+
+  --border-default: var(--color-border);
+  --border-strong: var(--color-petrol-600);
+
+  --focus-ring: var(--color-amber-500);
+}

@@ -8,12 +8,12 @@ const POS: Record<
   string,
   { x: string; y: string; size: number; layer: 1 | 2 | 3; dur: string; delay: string; rot: string; halo: string }
 > = {
-  riz:     { x: '58%', y: '30%', size: 176, layer: 3, dur: '4.6s', delay: '-1.2s', rot: '1.6deg',  halo: '#E5A24B' },
-  thon:    { x: '80%', y: '9%',  size: 122, layer: 2, dur: '5.2s', delay: '-0.4s', rot: '-1.5deg', halo: '#7fd9a8' },
-  coco:    { x: '69%', y: '60%', size: 158, layer: 3, dur: '4.2s', delay: '-2.1s', rot: '1.2deg',  halo: '#7fd9a8' },
-  fruits:  { x: '90%', y: '44%', size: 104, layer: 1, dur: '5.6s', delay: '-1.6s', rot: '-1.3deg', halo: '#E5A24B' },
-  poulet:  { x: '48%', y: '74%', size: 116, layer: 2, dur: '4.8s', delay: '-0.8s', rot: '1.4deg',  halo: '#E5A24B' },
-  petfood: { x: '88%', y: '76%', size: 96,  layer: 1, dur: '5.0s', delay: '-2.5s', rot: '-1.4deg', halo: '#7fd9a8' },
+  riz:     { x: '58%', y: '30%', size: 176, layer: 3, dur: '4.6s', delay: '-1.2s', rot: '1.6deg',  halo: 'var(--accent)' },
+  thon:    { x: '80%', y: '9%',  size: 122, layer: 2, dur: '5.2s', delay: '-0.4s', rot: '-1.5deg', halo: 'var(--color-petrol-300)' },
+  coco:    { x: '69%', y: '60%', size: 158, layer: 3, dur: '4.2s', delay: '-2.1s', rot: '1.2deg',  halo: 'var(--color-petrol-300)' },
+  fruits:  { x: '90%', y: '44%', size: 104, layer: 1, dur: '5.6s', delay: '-1.6s', rot: '-1.3deg', halo: 'var(--accent)' },
+  poulet:  { x: '48%', y: '74%', size: 116, layer: 2, dur: '4.8s', delay: '-0.8s', rot: '1.4deg',  halo: 'var(--accent)' },
+  petfood: { x: '88%', y: '76%', size: 96,  layer: 1, dur: '5.0s', delay: '-2.5s', rot: '-1.4deg', halo: 'var(--color-petrol-300)' },
 };
 
 // Auto-demo order (2-3 products showcased once on load)
@@ -204,8 +204,8 @@ const DEMO = ['riz', 'coco', 'thon'];
     width: 100%;
     aspect-ratio: 1;
     border-radius: 26px;
-    background: #ffffff;
-    border: 1px solid rgba(15, 61, 46, 0.06);
+    background: var(--color-white);
+    border: 1px solid color-mix(in srgb, var(--color-petrol-900) 6%, transparent);
     box-shadow: 0 18px 34px rgba(72, 52, 20, 0.14), 0 4px 10px rgba(72, 52, 20, 0.08);
     transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
   }
@@ -230,8 +230,8 @@ const DEMO = ['riz', 'coco', 'thon'];
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: var(--halo, #e5a24b);
-    box-shadow: 0 0 0 0 var(--halo, #e5a24b);
+    background: var(--halo, var(--accent));
+    box-shadow: 0 0 0 0 var(--halo, var(--accent));
     animation: pfPing 2.6s ease-out infinite;
   }
   @keyframes pfPing {
@@ -251,11 +251,11 @@ const DEMO = ['riz', 'coco', 'thon'];
     align-items: center;
     gap: 0.1rem;
     white-space: nowrap;
-    background: #0f3d2e;
-    color: #fff;
+    background: var(--color-petrol-900);
+    color: var(--text-inverse);
     border-radius: 10px;
     padding: 0.4rem 0.7rem;
-    box-shadow: 0 10px 24px rgba(15, 61, 46, 0.28);
+    box-shadow: 0 10px 24px rgba(11, 46, 52, 0.28);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
@@ -268,10 +268,10 @@ const DEMO = ['riz', 'coco', 'thon'];
   .pf-chip__go {
     font-size: 0.66rem;
     font-weight: 700;
-    color: var(--mint);
+    color: var(--accent);
   }
   .pf-chip__go span {
-    color: #e5a24b;
+    color: var(--accent);
   }
 
   /* ---- Relief state: hover / focus / auto-demo ---- */

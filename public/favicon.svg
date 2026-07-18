@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Gselltrading">
-  <rect width="64" height="64" rx="14" fill="#0f3d2e"/>
-  <path d="M32 14c-7 6-11 11-11 18a11 11 0 0 0 22 0c0-7-4-12-11-18z" fill="#7fd9a8"/>
-  <path d="M32 22v20" stroke="#0f3d2e" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M32 30c-3-1-5-3-6-5" stroke="#0f3d2e" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-  <path d="M32 36c3-1 5-3 6-5" stroke="#0f3d2e" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <rect width="64" height="64" rx="14" fill="#0b2e34"/>
+  <path d="M32 14c-7 6-11 11-11 18a11 11 0 0 0 22 0c0-7-4-12-11-18z" fill="#d98a2b"/>
+  <path d="M32 22v20" stroke="#0b2e34" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M32 30c-3-1-5-3-6-5" stroke="#0b2e34" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <path d="M32 36c3-1 5-3 6-5" stroke="#0b2e34" stroke-width="2.4" stroke-linecap="round" fill="none"/>
 </svg>

@@ -21,5 +21,8 @@ Email, Last call result, Status, Attempts, Last call date, Next action, Follow-u
 Notes / person reached). Une entrée qui ne correspond pas à exactement une ligne fait
 échouer la génération.
 
+Deux modes : `update` remplace la valeur d'un champ (compte rendu d'appel), `append`
+ajoute du texte à la suite des notes existantes sans rien effacer (recherches préalables).
+
 Attention : une saisie faite directement dans Excel n'est pas reportée dans
 `call_log.json` — elle serait écrasée par une régénération.

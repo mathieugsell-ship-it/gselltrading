@@ -259,8 +259,8 @@ def _company_match(want, have):
 if os.path.exists(CALL_LOG):
     entries = json.load(open(CALL_LOG, encoding='utf-8'))['entries']
     for e in entries:
-        m, upd = e['match'], e['update']
-        bad = set(upd) - EDITABLE
+        m, upd, app = e['match'], e.get('update', {}), e.get('append', {})
+        bad = (set(upd) | set(app)) - EDITABLE
         if bad:
             sys.exit(f"call_log: field(s) not editable {sorted(bad)} for {m}")
         hits = [rr for rr in range(2, LAST + 1)
@@ -272,7 +272,7 @@ if os.path.exists(CALL_LOG):
             sys.exit(f"call_log: {len(hits)} rows match {m} (expected exactly 1)")
         rr = hits[0]
         # optional cross-checks (project / site address / current contact): warn, never overwrite
-        for key, col in (('project', 'Project'), ('site_address', 'Site address')):
+        for key, col in (('project', 'Project'), ('site_address', 'Site address'), ('contact_person', 'Contact person')):
             if key in m and _norm(m[key]) != _norm(ws.cell(rr, H[col]).value):
                 print(f"WARNING call_log {m['file']} {m['role']}: {col} differs: {ws.cell(rr, H[col]).value!r} vs {m[key]!r}")
         for fld, val in upd.items():
@@ -284,6 +284,10 @@ if os.path.exists(CALL_LOG):
                 cell.hyperlink = tel_link(val) if val and val != 'To be found' and tel_link(val) else None
             if fld == 'Email':
                 cell.hyperlink = ('mailto:' + val) if val else None
+        # append: add text after what is already there (never erases earlier notes)
+        for fld, val in app.items():
+            cell = ws.cell(rr, H[fld])
+            cell.value = (cell.value + '\n\n' + val) if cell.value else val
     print('call log entries applied', len(entries))
 
 # cell styling

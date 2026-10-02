@@ -1,5 +1,5 @@
 """Build the phoning prospect workbook from parsed.json."""
-import json, re, sys
+import json, os, re, sys
 from datetime import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -128,12 +128,15 @@ wb = Workbook()
 ls = wb.active
 ls.title = 'Lists'
 LISTS = {
-    'Call result': ['Reached – right person', 'Reached – gatekeeper / switchboard', 'Voicemail (message left)',
-                    'Voicemail (no message)', 'No answer', 'Busy', 'Wrong / invalid number'],
-    'Status': ['To call', 'Call back', 'Interested', 'Meeting booked', 'Quote requested', 'Not interested',
-               'Already has a supplier', 'Not a fit', 'Project completed / cancelled'],
-    'Next action': ['Call back', 'Send brochure', 'Send quote', 'Meeting / site visit',
-                    'Follow-up email', 'None (closed)'],
+    'Call result': ['Reached – right person', 'Reached – gatekeeper / switchboard', 'Reached – contact unavailable',
+                    'Reached reception – email requested', 'Reached – project completed / no current opportunity',
+                    'Voicemail (message left)', 'Voicemail (no message)', 'Voicemail / no answer', 'No answer',
+                    'Not reachable', 'Busy', 'Wrong / invalid number'],
+    'Status': ['To call', 'Call back', 'Follow-up by email', 'Interested', 'Meeting booked', 'Quote requested',
+               'Not interested', 'Already has a supplier', 'Not a fit', 'Project completed / cancelled',
+               'Closed – no current need'],
+    'Next action': ['Call back', 'Qualify through owner', 'Send email', 'Send brochure', 'Send quote',
+                    'Meeting / site visit', 'Follow-up email', 'None (closed)'],
 }
 for j, (name, vals) in enumerate(LISTS.items()):
     c = 1 + j * 2
@@ -234,6 +237,55 @@ for p, c, _ in rows:
         ws.cell(r, H['Website']).hyperlink = c['web']
 LAST = r
 
+# ------------------------------------------------------------------ call log (persisted call tracking)
+# Each entry is matched on file + Infopro project ref. + role + company — never on company alone —
+# and must hit exactly one row. Only whitelisted call-tracking / contact fields may be written.
+CALL_LOG = sys.argv[3] if len(sys.argv) > 3 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'call_log.json')
+EDITABLE = {'Contact person', 'Phone', 'Email', 'Last call result', 'Status', 'Attempts', 'Last call date',
+            'Next action', 'Follow-up date', 'Notes / person reached'}
+DATE_FIELDS = {'Last call date', 'Follow-up date'}
+
+
+def _norm(s):
+    return re.sub(r'[^0-9a-zà-ÿ]+', ' ', (s or '').lower()).strip()
+
+
+def _company_match(want, have):
+    have_n = _norm(have)
+    parts = [want] + [p for p in want.split(' / ')]  # "A / B" may name the company two ways
+    return any(_norm(p) and (_norm(p) in have_n or have_n in _norm(p)) for p in parts)
+
+
+if os.path.exists(CALL_LOG):
+    entries = json.load(open(CALL_LOG, encoding='utf-8'))['entries']
+    for e in entries:
+        m, upd = e['match'], e['update']
+        bad = set(upd) - EDITABLE
+        if bad:
+            sys.exit(f"call_log: field(s) not editable {sorted(bad)} for {m}")
+        hits = [rr for rr in range(2, LAST + 1)
+                if ws.cell(rr, H['PDF file']).value == m['file']
+                and str(ws.cell(rr, H['Infopro project ref.']).value) == str(m['ref'])
+                and ws.cell(rr, H['Role']).value == m['role']
+                and _company_match(m['company'], ws.cell(rr, H['Company']).value)]
+        if len(hits) != 1:
+            sys.exit(f"call_log: {len(hits)} rows match {m} (expected exactly 1)")
+        rr = hits[0]
+        # optional cross-checks (project / site address / current contact): warn, never overwrite
+        for key, col in (('project', 'Project'), ('site_address', 'Site address')):
+            if key in m and _norm(m[key]) != _norm(ws.cell(rr, H[col]).value):
+                print(f"WARNING call_log {m['file']} {m['role']}: {col} differs: {ws.cell(rr, H[col]).value!r} vs {m[key]!r}")
+        for fld, val in upd.items():
+            if fld in DATE_FIELDS and val:
+                val = datetime.strptime(val, '%Y-%m-%d')
+            cell = ws.cell(rr, H[fld])
+            cell.value = val
+            if fld == 'Phone':
+                cell.hyperlink = tel_link(val) if val and val != 'To be found' and tel_link(val) else None
+            if fld == 'Email':
+                cell.hyperlink = ('mailto:' + val) if val else None
+    print('call log entries applied', len(entries))
+
 # cell styling
 for row in ws.iter_rows(min_row=2, max_row=LAST):
     for cell in row:
@@ -272,16 +324,20 @@ for rr in range(2, LAST + 1):
     ws.row_dimensions[rr].height = 30  # fixed 2-line rows: the call sheet stays scannable
 
 # data validation
-def add_dv(col_name, formula):
+def add_dv(col_name, formula, strict=True):
+    # strict: only list values (Status drives the dashboard and colours).
+    # non-strict: the list is a suggestion; a specific free-text entry is accepted after a warning.
     dv = DataValidation(type='list', formula1=formula, allow_blank=True, showErrorMessage=True,
-                        errorTitle='Unexpected value', error='Pick a value from the list (Lists sheet).')
+                        errorStyle='stop' if strict else 'warning', errorTitle='Unexpected value',
+                        error=('Pick a value from the list (Lists sheet).' if strict else
+                               'This value is not in the list (Lists sheet). Keep it anyway?'))
     ws.add_data_validation(dv)
     col = CL(H[col_name])
     dv.add(f"{col}2:{col}{LAST + 500}")
 
-add_dv('Last call result', list_ref('Call result'))
+add_dv('Last call result', list_ref('Call result'), strict=False)
 add_dv('Status', list_ref('Status'))
-add_dv('Next action', list_ref('Next action'))
+add_dv('Next action', list_ref('Next action'), strict=False)
 for nm in ('Last call date', 'Follow-up date'):
     dv = DataValidation(type='date', operator='greaterThan', formula1='DATE(2020,1,1)', allow_blank=True,
                         showErrorMessage=True, errorTitle='Invalid date', error='Enter a date (dd/mm/yyyy).')
@@ -300,11 +356,11 @@ ws.conditional_formatting.add(rng_all, FormulaRule(formula=[f'OR(${q}2="Meeting 
 ws.conditional_formatting.add(rng_all, FormulaRule(formula=[f'${q}2="Interested"'],
                               fill=PatternFill('solid', fgColor='E2F0D9')))
 ws.conditional_formatting.add(rng_all, FormulaRule(
-    formula=[f'OR(${q}2="Not interested",${q}2="Not a fit",${q}2="Project completed / cancelled",${q}2="Already has a supplier")'],
+    formula=[f'OR(${q}2="Not interested",${q}2="Not a fit",${q}2="Project completed / cancelled",${q}2="Already has a supplier",${q}2="Closed – no current need")'],
     font=Font(color='8C8C8C'), fill=PatternFill('solid', fgColor='F2F2F2')))
 # overdue follow-up (date passed and file still open)
 ws.conditional_formatting.add(f"{rl}2:{rl}{LAST + 500}", FormulaRule(
-    formula=[f'AND({rl}2<>"",{rl}2<=TODAY(),OR(${q}2="Call back",${q}2="Interested",${q}2="Quote requested",${q}2="To call"))'],
+    formula=[f'AND({rl}2<>"",{rl}2<=TODAY(),OR(${q}2="Call back",${q}2="Follow-up by email",${q}2="Interested",${q}2="Quote requested",${q}2="To call"))'],
     font=Font(name=F, bold=True, color='9C0006'), fill=PatternFill('solid', fgColor='FFC7CE')))
 ws.conditional_formatting.add(f"{pr}2:{pr}{LAST + 500}", CellIsRule(operator='equal', formula=['"A"'],
                               font=Font(name=F, bold=True, color='FFFFFF'), fill=PatternFill('solid', fgColor='B4541A')))
@@ -438,7 +494,7 @@ kpi(17, 'Interested + meetings + quotes', f'=COUNTIF({ap("Status")},"Interested"
 kpi(18, 'Conversion rate', '=IFERROR(C17/C15,0)', '0%', 'qualified / reached')
 kpi(19, 'Overdue follow-ups',
     f'=SUMPRODUCT(({ap("Follow-up date")}<>"")*({ap("Follow-up date")}<=TODAY())*'
-    f'(({ap("Status")}="Call back")+({ap("Status")}="Interested")+({ap("Status")}="Quote requested")+({ap("Status")}="To call")))')
+    f'(({ap("Status")}="Call back")+({ap("Status")}="Follow-up by email")+({ap("Status")}="Interested")+({ap("Status")}="Quote requested")+({ap("Status")}="To call")))')
 wd['C19'].font = Font(name=F, size=11, bold=True, color='9C0006')
 
 wd['F5'] = 'Contacts by status'; wd['F5'].font = h2

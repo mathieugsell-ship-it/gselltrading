@@ -11,5 +11,15 @@ cd harworth && python3 ../prospection/scripts/parse.py . > /tmp/parsed.json && c
 python3 prospection/scripts/build.py /tmp/parsed.json prospection/Prospection_Harworth.xlsx
 ```
 
-Attention : régénérer recrée un fichier vierge — les colonnes de suivi d'appel déjà
-remplies ne sont pas reprises.
+## Suivi des appels
+
+Les comptes rendus d'appels sont stockés dans `call_log.json` et réappliqués à chaque
+génération : régénérer le fichier ne perd donc pas le suivi. Chaque entrée est rattachée
+à sa ligne par **fichier PDF + réf. projet Infopro + rôle + société** (jamais la société
+seule) et ne peut modifier que les champs de contact et de suivi (Contact person, Phone,
+Email, Last call result, Status, Attempts, Last call date, Next action, Follow-up date,
+Notes / person reached). Une entrée qui ne correspond pas à exactement une ligne fait
+échouer la génération.
+
+Attention : une saisie faite directement dans Excel n'est pas reportée dans
+`call_log.json` — elle serait écrasée par une régénération.

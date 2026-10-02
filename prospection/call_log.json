@@ -1,0 +1,228 @@
+{
+  "_readme": "Call updates applied by scripts/build.py. Each entry is matched on file + Infopro project ref. + role + company (never company alone). Only the listed fields are written; null clears a field. Dates are YYYY-MM-DD.",
+  "entries": [
+    {
+      "match": {
+        "file": "DRINGEND 4.pdf",
+        "ref": "3417573",
+        "role": "Owner / client",
+        "company": "YNEO SA",
+        "project": "Aménagement d'un espace de coworking",
+        "site_address": "Route de Chancy 59, 1213 Petit-Lancy"
+      },
+      "update": {
+        "Contact person": "Nicky Suter",
+        "Phone": "022 307 99 00",
+        "Email": "info@yneo.ch",
+        "Last call result": "Reached – gatekeeper / switchboard",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Reception reached on 02/10/2026. Receptionist explained that Nicky Suter does not work on Fridays. Call back Monday afternoon and ask directly for Nicky Suter, Fit-out & Communications Manager.\n\nSecondary relevant contact: Melvin Bertagna, Site & Supplier Relations Manager.\n\nChancy 59 appears to be already operational. The objective of the next call is therefore to qualify both this project and YNEO as a potential recurring Haworth account: current furniture supplier(s), whether suppliers are exclusive or selected project by project, upcoming fit-outs, new locations and refurbishment projects.\n\nYNEO operates several office locations in Geneva and ergonomic furniture is part of its client offering.\n\nAvoid referring to YNEO as a \"coworking\" operator during the call. Refer instead to their office locations / workspaces."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 4.pdf",
+        "ref": "3417573",
+        "role": "Architect / planner",
+        "company": "Marques",
+        "project": "Aménagement d'un espace de coworking",
+        "site_address": "Route de Chancy 59, 1213 Petit-Lancy"
+      },
+      "update": {
+        "Contact person": null,
+        "Phone": "To be found",
+        "Email": null,
+        "Last call result": null,
+        "Status": "To call",
+        "Attempts": 0,
+        "Last call date": null,
+        "Next action": "Qualify through owner",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Do not call yet.\n\n\"Marques\" could not be reliably identified as the architect/planner for project reference 3417573 / Chancy 59 from the available information.\n\nQualify this contact during the callback to Nicky Suter at YNEO on 05/10/2026.\n\nAsk whether fit-out, furniture specification and design are handled internally by YNEO or with an external architect/planner.\n\nIf external, obtain:\n- exact company name\n- contact person\n- role\n- phone/email if available\n\nSame project as the YNEO SA Owner / client row."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 5.pdf",
+        "ref": "3416972",
+        "role": "Owner / client",
+        "company": "Yara Clean Ammonia Switzerland SA",
+        "project": "Aménagement de bureau",
+        "site_address": "Route de Florissant 13, 1206 Genève"
+      },
+      "update": {
+        "Last call result": "Reached – project completed / no opportunity",
+        "Status": "Closed – no current need",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "None",
+        "Follow-up date": null,
+        "Notes / person reached": "Project is completed.\n\nThe works were related to an office relocation. Yara did not purchase new furniture as part of the move.\n\nThe contact confirmed that there are currently no other office fit-out, refurbishment or furniture projects planned and therefore no current need for Haworth.\n\nNo follow-up required unless a new project is identified in the future."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 5.pdf",
+        "ref": "3416972",
+        "role": "Architect / planner",
+        "company": "TJCA SA",
+        "contact_person": "Ms Sabrina Harri"
+      },
+      "update": {
+        "Last call result": "Not reachable",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Attempted to reach Sabrina Harri regarding project reference 3416972 and TJCA's office fit-out / furniture specification activities.\n\nNot reachable.\n\nCall back on Monday 05/10/2026.\n\nThe Yara project itself is already completed, so the objective of the next call is not to reopen that project. The objective is to qualify TJCA as a potential recurring architect / furniture prescriber for other office projects and identify any current projects where furniture specification is still open.\n\nDirect line identified for Sabrina Harri: 022 869 88 27.\nEmail identified: sabrina.harri@tjca.ch"
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 6.pdf",
+        "ref": "3416925",
+        "role": "Owner / client",
+        "company": "von Rundstedt & Partner Suisse SA / Alixio Mobility",
+        "contact_person": "Ms Anne Donou",
+        "project": "Transformation et rénovation de bureaux",
+        "site_address": "Rue de Lausanne 80, 1202 Genève"
+      },
+      "update": {
+        "Last call result": "Reached – project completed / no current opportunity",
+        "Status": "Closed – no current need",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "None",
+        "Follow-up date": null,
+        "Notes / person reached": "Contact confirmed that the company has already completed its move.\n\nThere are currently no additional office relocation, refurbishment, fit-out or furniture projects planned.\n\nNo current opportunity for Haworth.\n\nNo follow-up required unless a new project is identified in the future."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 6.pdf",
+        "ref": "3416925",
+        "role": "Architect / planner",
+        "company": "RIS + Partenaires Architectes SA",
+        "contact_person": "Mr Antoine Ris",
+        "project": "Transformation et rénovation de bureaux",
+        "site_address": "Rue de Lausanne 80, 1202 Genève"
+      },
+      "update": {
+        "Last call result": "Reached – contact unavailable",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back and ask for Mr Antoine Ris",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Reached RIS + Partenaires Architectes SA.\n\nMr Antoine Ris was not available.\n\nCall back next week and ask directly for Mr Ris.\n\nThe original Alixio / von Rundstedt project reference 3416925 is already completed. The objective of the next call is therefore to qualify RIS + Partenaires as a potential recurring architect / furniture prescriber for future office fit-out projects.\n\nKey points to qualify on the next call:\n- whether RIS directly specifies office furniture\n- whether Haworth is already known or used\n- current or upcoming office projects where furniture specification is still open\n- usual furniture brands / suppliers\n- possibility of a physical meeting with Manojlo Jelic"
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 7.pdf",
+        "ref": "3412698",
+        "role": "Owner / client",
+        "company": "Ville de Morges",
+        "project": "Transformation d'une école de voile",
+        "site_address": "Place de la Navigation 1, 1110 Morges"
+      },
+      "update": {
+        "Last call result": "Voicemail / no answer",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Attempted to reach the relevant contact regarding project reference 3412698.\n\nCall went to voicemail / no answer.\n\nRetry next week.\n\nProject appears to still be potentially active and relevant for Haworth. The key objective on the next call is to determine:\n- current project stage\n- whether the furniture package is still open\n- who is responsible for furniture specification and purchasing\n- whether Club Nautique Morgien, Ville de Morges or Fehlmann Architectes is leading the furniture decision\n- whether a separate tender / procurement procedure is planned\n- timing for furniture selection\n- possibility of an on-site meeting with Manojlo Jelic\n\nDo not mark the opportunity as closed."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 7.pdf",
+        "ref": "3412698",
+        "role": "Architect / planner",
+        "company": "Fehlmann Architectes SA",
+        "contact_person": "Mr Serge Fehlmann",
+        "project": "Transformation d'une école de voile",
+        "site_address": "Place de la Navigation 1, 1110 Morges"
+      },
+      "update": {
+        "Phone": "021 811 10 10",
+        "Email": "info@farch.ch",
+        "Last call result": "Reached reception – email requested",
+        "Status": "Follow-up by email",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Send targeted email to info@farch.ch for the attention of Mr Serge Fehlmann",
+        "Follow-up date": "2026-10-06",
+        "Notes / person reached": "Reached Fehlmann Architectes SA by phone on 02/10/2026.\n\nReception explained that Mr Serge Fehlmann is unlikely to have time to handle this type of request by phone and specifically requested that the enquiry be sent by email to info@farch.ch.\n\nThe email address and domain have been verified against Fehlmann Architectes SA's current official website:\ninfo@farch.ch\nDomain: farch.ch\n\nDo not send on Friday. Schedule the first email for Tuesday 06/10/2026 at approximately 09:00 Switzerland time.\n\nProject reference 3412698 still appears potentially relevant. Fehlmann Architectes SA is the architect / planner associated with the Club Nautique Morgien project at Place de la Navigation 1.\n\nObjective of the email:\n- establish contact with Mr Serge Fehlmann / the architect currently responsible for the project\n- determine the current stage of the project\n- determine whether the furniture package is still open\n- identify who specifies and selects the furniture\n- understand whether a procurement / tender procedure is planned\n- obtain a physical meeting with Haworth regional representative Manojlo Jelic if the furniture specification is still open\n\nImportant:\nDo not treat the opportunity as closed.\nDo not send a generic Haworth catalogue email.\nThe email should be short, project-specific and focused on the active Club Nautique Morgien project."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 13.pdf",
+        "ref": "3403243",
+        "role": "Owner / client",
+        "company": "Societe Immobiliere de la Place de la Gare A SA",
+        "project": "Aménagement d'un local d'exploitation - MBC",
+        "site_address": "Rue Centrale 29, 1110 Morges"
+      },
+      "update": {
+        "Last call result": "IVR reached - unable to select menu option",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Retry MBC / resolve Aircall DTMF issue",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Called MBC at 021 811 43 43 regarding project reference 3403243.\n\nReached the automated telephone menu, but the Aircall keypad / DTMF input did not register, so it was not possible to reach the appropriate department.\n\nThe project remains potentially active.\n\nA parallel contact attempt is being made through the project architect, Doutaz Architecture SA, under the separate Architect / planner row for project reference 3403243."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 13.pdf",
+        "ref": "3403243",
+        "role": "Architect / planner",
+        "company": "Doutaz Architecture SA",
+        "project": "Aménagement d'un local d'exploitation - MBC",
+        "site_address": "Rue Centrale 29, 1110 Morges"
+      },
+      "update": {
+        "Contact person": "Ms Anne Longchamp",
+        "Phone": "026 564 20 20",
+        "Email": "info@doutaz-architecture.ch",
+        "Last call result": "Voicemail - office closed / unavailable on Fridays",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back and ask for Anne Longchamp",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Called Doutaz Architecture SA on 02/10/2026 regarding project reference 3403243 / MBC premises at Rue Centrale 29, Morges.\n\nReached the office answering machine. The message indicated that the office does not answer calls on Fridays.\n\nCall back on Monday 05/10/2026 and ask for Anne Longchamp.\n\nAnne Longchamp has been identified as the architect associated with the MBC project.\n\nObjective of next call:\n- confirm current project stage\n- determine whether the furniture package is still open\n- establish whether Doutaz Architecture is responsible for furniture specification\n- determine whether MBC or the architect selects the furniture suppliers\n- identify any procurement / tender process\n- determine expected timing for furniture selection\n- assess opportunity for a physical meeting with Manojlo Jelic\n\nProject remains potentially active. Do not close the opportunity."
+      }
+    },
+    {
+      "match": {
+        "file": "DRINGEND 15.pdf",
+        "ref": "3404345",
+        "role": "Owner / client",
+        "company": "HIAG Immobilier Schweiz AG",
+        "contact_person": "Mr Patrick Japhet",
+        "project": "Changement d'affectation",
+        "site_address": "Avenue de Grandson 48, 1400 Yverdon-les-Bains"
+      },
+      "update": {
+        "Last call result": "No answer",
+        "Status": "Call back",
+        "Attempts": 1,
+        "Last call date": "2026-10-02",
+        "Next action": "Call back and ask for Mr Patrick Japhet",
+        "Follow-up date": "2026-10-05",
+        "Notes / person reached": "Attempted to reach Patrick Japhet regarding project reference 3404345 and the fit-out of a classroom at HIAG's Village 48 site in Yverdon-les-Bains.\n\nNo answer.\n\nCall back on Monday 05/10/2026.\n\nThe specific classroom project may already be completed or advanced, but HIAG remains a potentially valuable account as a major real estate owner / developer in French-speaking Switzerland.\n\nObjective of the next call:\n- confirm whether project 3404345 is completed\n- understand whether HIAG is involved in furniture selection for tenant fit-outs\n- determine whether furniture decisions are handled by HIAG, tenants or architects\n- identify the relevant person for interior fit-out / furniture in Western Switzerland\n- identify any current or upcoming projects where furniture specification is still open\n- assess potential for a physical meeting with Manojlo Jelic"
+      }
+    }
+  ]
+}
